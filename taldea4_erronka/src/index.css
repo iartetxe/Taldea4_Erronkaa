@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Sedgwick+Ave&display=swap');
+
+body {
+  margin: 0;           
+  padding: 0;           
+  background-color: #fdfbf0;
+}
+
+.graffiti-testua {
+  font-family: 'Kaushan Script', cursive;
+  color: orange;
+  font-size: 1.7em; 
+  text-shadow: 3px 3px 0px #000; 
+  transform: rotate(-5deg); 
+  display: inline-block; 
+  margin-right: 2px;
+}

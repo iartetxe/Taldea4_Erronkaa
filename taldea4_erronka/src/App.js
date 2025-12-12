@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout'; 
 import Hasiera from './pages/Hasiera';
 // 2. Asumimos que moviste y renombraste a Formulario.js en la carpeta pages
-import Formulario from './pages/formulario.js'; 
+import Kontaktua from './pages/Kontaktua.js'; 
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
           {/* RUTA HIJA 2:
               Renderiza el componente Formulario cuando la ruta es "/formulario"
           */}
-          <Route path="kontaktua" element={<Formulario />} /> 
+          <Route path="kontaktua" element={<Kontaktua />} /> 
           
           {/* Puedes añadir más rutas aquí si es necesario (ej. /acerca-de, /contacto, etc.) */}
           

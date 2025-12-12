@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { FaPaperPlane, FaUser, FaCommentDots, FaEnvelopeOpenText } from 'react-icons/fa'; 
 
 const Formulario = () => {
-  // 1. ESTADO: Guardamos los datos (YA NO guardamos el email aquí porque viene del usuario logueado)
+  // 1. ESTADO: Volvemos a incluir 'email' en el estado inicial
   const [formData, setFormData] = useState({
-    izena: '',       // Nombre (Opcional: podrías quitarlo también si usas el nombre de usuario)
-    gaia: '',        // Asunto
-    mezua: ''        // Mensaje
+    izena: '',       
+    email: '',       // <--- Recuperado
+    gaia: '',        
+    mezua: ''        
   });
 
   // Estado para mostrar mensaje de éxito al enviar
@@ -25,20 +26,12 @@ const Formulario = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); 
     
-    // SIMULACIÓN: Aquí recuperaríamos el email del usuario logueado
-    const usuarioLogueadoEmail = "usuario_actual@artetxea.com"; // Esto vendrá de tu base de datos/sesión
+    // Ahora enviamos directamente lo que el usuario ha escrito, sin simular login
+    console.log('Mezua bidalita:', formData);
     
-    // Preparamos el objeto final para enviar al backend
-    const datosParaEnviar = {
-      ...formData,
-      email: usuarioLogueadoEmail // Lo inyectamos automáticamente
-    };
-
-    console.log('Mezua bidalita:', datosParaEnviar);
-    
-    // Simulamos éxito y limpiamos el formulario
+    // Simulamos éxito y limpiamos el formulario COMPLETO
     setBidalita(true);
-    setFormData({ izena: '', gaia: '', mezua: '' }); // Limpiamos campos
+    setFormData({ izena: '', email: '', gaia: '', mezua: '' }); 
 
     // Ocultar mensaje de éxito después de 5 segundos
     setTimeout(() => setBidalita(false), 5000);
@@ -67,7 +60,7 @@ const Formulario = () => {
               {/* Mensaje de Éxito */}
               {bidalita && (
                 <div className="alert alert-success text-center fade show" role="alert">
-                  <strong>Eskerrik asko!</strong> Zure mezua jaso dugu. Laster erantzungo dizugu zure korreora.
+                  <strong>Eskerrik asko!</strong> Zure mezua ondo jaso dugu.
                 </div>
               )}
 
@@ -91,9 +84,25 @@ const Formulario = () => {
                   </div>
                 </div>
 
-                {/* --- CAMPO EMAIL ELIMINADO (Se coge automáticamente) --- */}
+                {/* CAMPO 2: EMAIL (Recuperado) */}
+                <div className="mb-4">
+                  <label htmlFor="email" className="form-label fw-bold text-muted">Posta Elektronikoa / Email *</label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light border-end-0">@</span>
+                    <input
+                      type="email"
+                      className="form-control bg-light border-start-0"
+                      id="email"
+                      name="email"
+                      placeholder="adibidea@email.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required 
+                    />
+                  </div>
+                </div>
 
-                {/* CAMPO 2: GAIA (Asunto) */}
+                {/* CAMPO 3: GAIA (Asunto) */}
                 <div className="mb-4">
                   <label htmlFor="gaia" className="form-label fw-bold text-muted">Gaia / Asunto *</label>
                   <select 
@@ -112,7 +121,7 @@ const Formulario = () => {
                   </select>
                 </div>
 
-                {/* CAMPO 3: MEZUA (Mensaje) */}
+                {/* CAMPO 4: MEZUA (Mensaje) */}
                 <div className="mb-4">
                   <label htmlFor="mezua" className="form-label fw-bold text-muted">Mezua / Mensaje *</label>
                   <div className="input-group">

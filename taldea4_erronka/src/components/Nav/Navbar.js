@@ -41,8 +41,6 @@ const Navbar = () => {
         <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
           <ul className="navbar-nav align-items-center gap-3">
             
-            {/* ... (El resto de tus enlaces <Link> y <a>) ... */}
-            
             <li className="nav-item">
               <Link className="nav-link text-white fw-bold" to="/">HASIERA</Link>
             </li>
@@ -52,18 +50,22 @@ const Navbar = () => {
             <li className="nav-item">
               <a className="nav-link text-white fw-bold" href="#">ENKANTEAK</a>
             </li>
+            
+            {/* Estos dos los devolvemos a '#' porque aún no tienen página */}
             <li className="nav-item">
-              <Link className="nav-link text-white fw-bold" to="/formulario">EROSKETAK</Link>
+              <a className="nav-link text-white fw-bold" href="#">EROSKETAK</a>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white fw-bold" to="/formulario">FORUA</Link> 
+              <a className="nav-link text-white fw-bold" href="#">FORUA</a> 
             </li>
+            
+            {/* CAMBIO AQUÍ: KONTAKTUA ahora es un Link que lleva a la ruta nueva */}
             <li className="nav-item">
-              <a className="nav-link text-white fw-bold" href="#">KONTAKTUA</a>
+              <Link className="nav-link text-white fw-bold" to="/kontaktua">KONTAKTUA</Link>
             </li>
             
             <li className="nav-item">
-              <a className="ranking-icon position-relative d-flex align-items-center justify-content-center text-warning" href="">
+              <a className="ranking-icon position-relative d-flex align-items-center justify-content-center text-warning" href="#">
                 <MdStar size={40} />
                 <span className="position-absolute fw-bold text-white" style={{fontSize: '14px'}}>1</span>
               </a>

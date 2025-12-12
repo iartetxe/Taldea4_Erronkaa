@@ -28,7 +28,7 @@ function App() {
           {/* RUTA HIJA 2:
               Renderiza el componente Formulario cuando la ruta es "/formulario"
           */}
-          <Route path="formulario" element={<Formulario />} /> 
+          <Route path="kontaktua" element={<Formulario />} /> 
           
           {/* Puedes añadir más rutas aquí si es necesario (ej. /acerca-de, /contacto, etc.) */}
           

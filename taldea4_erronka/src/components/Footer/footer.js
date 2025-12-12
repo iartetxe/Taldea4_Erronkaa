@@ -1,6 +1,7 @@
 import React from 'react';
 import "../Footer/footer.css";
 
+
 // Importaciones necesarias para los iconos de Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 

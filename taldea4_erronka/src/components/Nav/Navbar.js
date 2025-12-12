@@ -1,22 +1,33 @@
-import React  from 'react';
+import React, { useState } from 'react'; // <--- 1. ¡IMPORTAMOS useState!
 import { MdStar } from 'react-icons/md';
 import logo from '../../assets/logo-artetxea.png';
 import './Navbar.css';
+import { Link } from 'react-router-dom'; 
+
+// 2. ¡IMPORTAMOS EL COMPONENTE DEL MODAL! (Asegúrate que la ruta sea correcta)
+import LoginModal from '../LoginModal'; 
 
 const Navbar = () => {
+  // 3. DEFINIMOS EL ESTADO para controlar la visibilidad del modal
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // Funciones para abrir y cerrar
+  const handleShowLogin = () => setShowLoginModal(true);
+  const handleCloseLogin = () => setShowLoginModal(false);
+
   return (
     <div className="container mt-4">
       
       <nav className="navbar navbar-expand-lg custom-navbar px-3">
         
-        
-        <a className="navbar-brand d-flex align-items-center" href="#">
+        {/* Enlace del logo/marca a la página de inicio */}
+        <Link className="navbar-brand d-flex align-items-center" to="/">
            <img 
              src={logo} 
              alt="Artetxea Logo" 
              className="logo-img rounded-circle border border-dark" 
            />
-        </a>
+        </Link>
 
         <button 
           className="navbar-toggler" 
@@ -29,8 +40,11 @@ const Navbar = () => {
 
         <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
           <ul className="navbar-nav align-items-center gap-3">
+            
+            {/* ... (El resto de tus enlaces <Link> y <a>) ... */}
+            
             <li className="nav-item">
-              <a className="nav-link text-white fw-bold" href="#">HASIERA</a>
+              <Link className="nav-link text-white fw-bold" to="/">HASIERA</Link>
             </li>
             <li className="nav-item">
               <a className="nav-link text-white fw-bold" href="#">GALERIA</a>
@@ -39,10 +53,10 @@ const Navbar = () => {
               <a className="nav-link text-white fw-bold" href="#">ENKANTEAK</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white fw-bold" href="#">EROSKETAK</a>
+              <Link className="nav-link text-white fw-bold" to="/formulario">EROSKETAK</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white fw-bold" href="#">FORUA</a>
+              <Link className="nav-link text-white fw-bold" to="/formulario">FORUA</Link> 
             </li>
             <li className="nav-item">
               <a className="nav-link text-white fw-bold" href="#">KONTAKTUA</a>
@@ -58,17 +72,27 @@ const Navbar = () => {
         </div>
 
         <div className="d-flex align-items-center ms-auto gap-2">   
-                  <button className="btn btn-outline-light btn-sm fw-bold rounded-pill px-3">
+                  {/* 3. AÑADIMOS EL EVENTO onClick AL BOTÓN "Saioa hasi" */}
+                  <button 
+                    className="btn btn-outline-light btn-sm fw-bold rounded-pill px-3"
+                    onClick={handleShowLogin} // <-- ¡Conectado al estado!
+                  >
                     Saioa hasi
                   </button>
                   <button className="btn btn-warning btn-sm fw-bold rounded-pill px-3 text-dark">
                     Erregistratu
                   </button>
-              
-  
         </div>
 
       </nav>
+      
+      {/* 4. RENDERIZAMOS EL MODAL AQUÍ */}
+      {/* Se muestra/oculta basado en el estado 'showLoginModal' */}
+      <LoginModal 
+        show={showLoginModal} 
+        handleClose={handleCloseLogin} 
+      />
+
     </div>
   );
 };

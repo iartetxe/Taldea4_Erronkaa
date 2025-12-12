@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { FaPaperPlane, FaEnvelope, FaUser, FaCommentDots } from 'react-icons/fa'; // Iconos para hacerlo visual
+import { FaPaperPlane, FaUser, FaCommentDots, FaEnvelopeOpenText } from 'react-icons/fa'; 
 
 const Formulario = () => {
-  // 1. ESTADO: Guardamos los datos del usuario
+  // 1. ESTADO: Guardamos los datos (YA NO guardamos el email aquí porque viene del usuario logueado)
   const [formData, setFormData] = useState({
-    izena: '',       // Nombre
-    email: '',       // Correo
-    gaia: '',        // Asunto (Nuevo campo recomendado)
+    izena: '',       // Nombre (Opcional: podrías quitarlo también si usas el nombre de usuario)
+    gaia: '',        // Asunto
     mezua: ''        // Mensaje
   });
 
@@ -24,14 +23,22 @@ const Formulario = () => {
 
   // 3. LÓGICA: Enviar el formulario
   const handleSubmit = (e) => {
-    e.preventDefault(); // Evita que se recargue la página
+    e.preventDefault(); 
     
-    // Aquí iría la lógica para enviar al Backend (Node/Laravel)
-    console.log('Formularioa bidalita:', formData);
+    // SIMULACIÓN: Aquí recuperaríamos el email del usuario logueado
+    const usuarioLogueadoEmail = "usuario_actual@artetxea.com"; // Esto vendrá de tu base de datos/sesión
+    
+    // Preparamos el objeto final para enviar al backend
+    const datosParaEnviar = {
+      ...formData,
+      email: usuarioLogueadoEmail // Lo inyectamos automáticamente
+    };
+
+    console.log('Mezua bidalita:', datosParaEnviar);
     
     // Simulamos éxito y limpiamos el formulario
     setBidalita(true);
-    setFormData({ izena: '', email: '', gaia: '', mezua: '' });
+    setFormData({ izena: '', gaia: '', mezua: '' }); // Limpiamos campos
 
     // Ocultar mensaje de éxito después de 5 segundos
     setTimeout(() => setBidalita(false), 5000);
@@ -45,10 +52,10 @@ const Formulario = () => {
           {/* TARJETA PRINCIPAL */}
           <div className="card shadow-lg border-0 rounded-4">
             
-            {/* Cabecera de la tarjeta */}
+            {/* Cabecera */}
             <div className="card-header bg-dark text-white text-center py-4 rounded-top-4">
               <h2 className="fw-bold mb-0">
-                <FaEnvelope className="me-2 text-warning" /> 
+                <FaEnvelopeOpenText className="me-2 text-warning" /> 
                 Jarri gurekin harremanetan
               </h2>
               <p className="small mb-0 text-white-50">Zalantzarik baduzu? Idatz iguzu!</p>
@@ -57,10 +64,10 @@ const Formulario = () => {
             {/* Cuerpo del formulario */}
             <div className="card-body p-5 bg-white">
               
-              {/* Mensaje de Éxito (Alerta) */}
+              {/* Mensaje de Éxito */}
               {bidalita && (
                 <div className="alert alert-success text-center fade show" role="alert">
-                  <strong>Eskerrik asko!</strong> Zure mezua ondo bidali da. Laster erantzungo dizugu.
+                  <strong>Eskerrik asko!</strong> Zure mezua jaso dugu. Laster erantzungo dizugu zure korreora.
                 </div>
               )}
 
@@ -79,30 +86,14 @@ const Formulario = () => {
                       placeholder="Zure izena idatzi..."
                       value={formData.izena}
                       onChange={handleChange}
-                      required // <--- OBLIGATORIO
+                      required 
                     />
                   </div>
                 </div>
 
-                {/* CAMPO 2: EMAIL */}
-                <div className="mb-4">
-                  <label htmlFor="email" className="form-label fw-bold text-muted">Posta Elektronikoa / Email *</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light border-end-0">@</span>
-                    <input
-                      type="email"
-                      className="form-control bg-light border-start-0"
-                      id="email"
-                      name="email"
-                      placeholder="adibidea@email.com"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required // <--- OBLIGATORIO
-                    />
-                  </div>
-                </div>
+                {/* --- CAMPO EMAIL ELIMINADO (Se coge automáticamente) --- */}
 
-                {/* CAMPO 3: GAIA (Asunto - Recomendado para organizar preguntas) */}
+                {/* CAMPO 2: GAIA (Asunto) */}
                 <div className="mb-4">
                   <label htmlFor="gaia" className="form-label fw-bold text-muted">Gaia / Asunto *</label>
                   <select 
@@ -111,7 +102,7 @@ const Formulario = () => {
                     name="gaia"
                     value={formData.gaia}
                     onChange={handleChange}
-                    required // <--- OBLIGATORIO
+                    required 
                   >
                     <option value="" disabled>Aukeratu gai bat...</option>
                     <option value="duda_general">Zalantza orokorra</option>
@@ -121,7 +112,7 @@ const Formulario = () => {
                   </select>
                 </div>
 
-                {/* CAMPO 4: MEZUA (Mensaje) */}
+                {/* CAMPO 3: MEZUA (Mensaje) */}
                 <div className="mb-4">
                   <label htmlFor="mezua" className="form-label fw-bold text-muted">Mezua / Mensaje *</label>
                   <div className="input-group">
@@ -134,11 +125,8 @@ const Formulario = () => {
                       placeholder="Nola lagundu zaitzakegu?"
                       value={formData.mezua}
                       onChange={handleChange}
-                      required // <--- OBLIGATORIO
+                      required 
                     ></textarea>
-                  </div>
-                  <div className="form-text text-end">
-                    * Eremu guztiak derrigorrezkoak dira.
                   </div>
                 </div>
 
@@ -152,7 +140,6 @@ const Formulario = () => {
               </form>
             </div>
             
-            {/* Pie de tarjeta decorativo */}
             <div className="card-footer bg-light text-center py-3 border-0 rounded-bottom-4">
               <small className="text-muted">Artetxea Team &copy; 2025</small>
             </div>

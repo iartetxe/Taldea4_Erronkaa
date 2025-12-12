@@ -23,19 +23,19 @@ const Footer = () => {
         <div className="social-icons mb-3">
           {/* Reemplaza "URL_DE_TU_..." con las URLs reales de tus perfiles */}
           
-          <a href="URL_DE_TU_FACEBOOK" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <a href="https://www.facebook.com/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
             <FontAwesomeIcon icon={faFacebookF} />
           </a>
           
-          <a href="URL_DE_TU_TWITTER" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+          <a href="https://x.com/home?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
             <FontAwesomeIcon icon={faTwitter} />
           </a>
           
-          <a href="URL_DE_TU_INSTAGRAM" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <FontAwesomeIcon icon={faInstagram} />
           </a>
           
-          <a href="URL_DE_TU_LINKEDIN" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <a href="https://es.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <FontAwesomeIcon icon={faLinkedinIn} />
           </a>
         </div>

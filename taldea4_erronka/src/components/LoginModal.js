@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Iconos para mostrar/ocultar
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-// Este componente recibe dos props: show (mostrar) y handleClose (cerrar)
 const LoginModal = ({ show, handleClose }) => {
   
-  // 1. ESTADO para controlar si el modal es visible (ya lo tienes en Navbar.js, pero lo usamos aquí para las clases)
+
   const showHideClassName = show ? "modal d-block" : "modal d-none";
 
   // 2. ESTADO para controlar si la contraseña es visible (para el botón 'Ver Contraseña')
@@ -17,7 +16,7 @@ const LoginModal = ({ show, handleClose }) => {
     rememberMe: false
   });
 
-  // Manejador genérico para todos los inputs
+  
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setLoginData({
@@ -26,16 +25,15 @@ const LoginModal = ({ show, handleClose }) => {
     });
   };
 
-  // Manejador del envío del formulario
+  
   const handleLogin = (e) => {
     e.preventDefault(); 
     
     console.log('--- Datos de Inicio de Sesión ---');
     console.log(loginData);
 
-    // Lógica real de autenticación aquí...
     alert(`Intentando iniciar sesión con ${loginData.email}. Recordar: ${loginData.rememberMe}`);
-    handleClose(); // Cerrar el modal después de la acción (simulación)
+    handleClose();
   };
 
   return (
@@ -70,7 +68,7 @@ const LoginModal = ({ show, handleClose }) => {
                 />
               </div>
 
-              {/* CAMPO: CONTRASEÑA con botón 'VER' */}
+              {/* CAMPO: CONTRASEÑA*/}
               <div className="mb-3">
                 <label htmlFor="inputPassword" className="form-label">Contraseña</label>
                 <div className="input-group">
@@ -97,13 +95,12 @@ const LoginModal = ({ show, handleClose }) => {
                 </div>
               </div>
               
-              {/* CHECKBOX: RECORDAR CONTRASEÑA */}
               <div className="mb-3 form-check">
                 <input 
                   type="checkbox" 
                   className="form-check-input" 
                   id="checkRemember" 
-                  name="rememberMe" // Importante para el estado
+                  name="rememberMe"
                   checked={loginData.rememberMe}
                   onChange={handleChange}
                 />

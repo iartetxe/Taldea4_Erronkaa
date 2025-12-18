@@ -7,8 +7,6 @@ import logo from '../assets/logo-kolor.png';
 const Hasiera = () => {
   return (
     <div className="container mt-5 mb-5">
-      
-      {/* --- SECCIÓN 1: TÍTULO PRINCIPAL --- */}
       <div className="text-center mb-5">
         <h1 className="display-4 fw-bold mb-3">
           Ongi etorri <span className="graffiti-testua">Art</span>etxera
@@ -24,14 +22,14 @@ const Hasiera = () => {
           
           <div id="arteKarusela" className="carousel slide shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel">
             
-            {/* Indicadores */}
+            
             <div className="carousel-indicators">
               <button type="button" data-bs-target="#arteKarusela" data-bs-slide-to="0" className="active" aria-current="true"></button>
               <button type="button" data-bs-target="#arteKarusela" data-bs-slide-to="1"></button>
               <button type="button" data-bs-target="#arteKarusela" data-bs-slide-to="2"></button>
             </div>
 
-            {/* Imágenes y Descripciones */}
+           
             <div className="carousel-inner">
               
               {/* SLIDE 1 */}

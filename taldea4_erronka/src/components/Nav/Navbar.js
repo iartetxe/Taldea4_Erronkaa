@@ -1,17 +1,15 @@
-import React, { useState } from 'react'; // <--- 1. ¡IMPORTAMOS useState!
+import React, { useState } from 'react';
 import { MdStar } from 'react-icons/md';
 import logo from '../../assets/logo-artetxea.png';
 import './Navbar.css';
 import { Link } from 'react-router-dom'; 
 
-// 2. ¡IMPORTAMOS EL COMPONENTE DEL MODAL! (Asegúrate que la ruta sea correcta)
+
 import LoginModal from '../LoginModal'; 
 
 const Navbar = () => {
-  // 3. DEFINIMOS EL ESTADO para controlar la visibilidad del modal
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // Funciones para abrir y cerrar
   const handleShowLogin = () => setShowLoginModal(true);
   const handleCloseLogin = () => setShowLoginModal(false);
 
@@ -20,7 +18,6 @@ const Navbar = () => {
       
       <nav className="navbar navbar-expand-lg custom-navbar px-3">
         
-        {/* Enlace del logo/marca a la página de inicio */}
         <Link className="navbar-brand d-flex align-items-center" to="/">
            <img 
              src={logo} 
@@ -50,8 +47,6 @@ const Navbar = () => {
             <li className="nav-item">
               <a className="nav-link text-white fw-bold" href="#">ENKANTEAK</a>
             </li>
-            
-            {/* Estos dos los devolvemos a '#' porque aún no tienen página */}
             <li className="nav-item">
               <a className="nav-link text-white fw-bold" href="#">EROSKETAK</a>
             </li>
@@ -59,7 +54,7 @@ const Navbar = () => {
               <a className="nav-link text-white fw-bold" href="#">FORUA</a> 
             </li>
             
-            {/* CAMBIO AQUÍ: KONTAKTUA ahora es un Link que lleva a la ruta nueva */}
+            
             <li className="nav-item">
               <Link className="nav-link text-white fw-bold" to="/kontaktua">KONTAKTUA</Link>
             </li>
@@ -74,22 +69,24 @@ const Navbar = () => {
         </div>
 
         <div className="d-flex align-items-center ms-auto gap-2">   
-                  {/* 3. AÑADIMOS EL EVENTO onClick AL BOTÓN "Saioa hasi" */}
+                  
                   <button 
                     className="btn btn-outline-light btn-sm fw-bold rounded-pill px-3"
-                    onClick={handleShowLogin} // <-- ¡Conectado al estado!
+                    onClick={handleShowLogin} // 
                   >
                     Saioa hasi
                   </button>
-                  <button className="btn btn-warning btn-sm fw-bold rounded-pill px-3 text-dark">
+                 <Link 
+                    to="/erregistratu" 
+                    className="btn btn-warning btn-sm fw-bold rounded-pill px-3 text-dark"
+                  >
                     Erregistratu
-                  </button>
+                  </Link>
         </div>
 
       </nav>
       
-      {/* 4. RENDERIZAMOS EL MODAL AQUÍ */}
-      {/* Se muestra/oculta basado en el estado 'showLoginModal' */}
+      
       <LoginModal 
         show={showLoginModal} 
         handleClose={handleCloseLogin} 

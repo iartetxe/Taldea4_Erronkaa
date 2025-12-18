@@ -1,5 +1,5 @@
 import React from 'react';
-import obra2 from '../assets/irudi2.jpeg'; 
+import obra2 from '../assets/irudi2.jpg'; 
 import obra1 from '../assets/irudi3.jpg'; 
 import obra3 from '../assets/irudia1graff.jpg'; 
 import logo from '../assets/logo-kolor.png';

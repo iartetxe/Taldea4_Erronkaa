@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { FaPaperPlane, FaUser, FaCommentDots, FaEnvelopeOpenText } from 'react-icons/fa'; 
 
 const Formulario = () => {
-  // 1. ESTADO: Volvemos a incluir 'email' en el estado inicial
   const [formData, setFormData] = useState({
     izena: '',       
-    email: '',       // <--- Recuperado
+    email: '',       
     gaia: '',        
     mezua: ''        
   });
 
-  // Estado para mostrar mensaje de éxito al enviar
+
   const [bidalita, setBidalita] = useState(false);
 
-  // 2. LÓGICA: Manejar cambios en los inputs
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -22,18 +21,18 @@ const Formulario = () => {
     });
   };
 
-  // 3. LÓGICA: Enviar el formulario
+  
   const handleSubmit = (e) => {
     e.preventDefault(); 
     
-    // Ahora enviamos directamente lo que el usuario ha escrito, sin simular login
+    
     console.log('Mezua bidalita:', formData);
     
-    // Simulamos éxito y limpiamos el formulario COMPLETO
+    
     setBidalita(true);
     setFormData({ izena: '', email: '', gaia: '', mezua: '' }); 
 
-    // Ocultar mensaje de éxito después de 5 segundos
+    
     setTimeout(() => setBidalita(false), 5000);
   };
 
@@ -42,10 +41,10 @@ const Formulario = () => {
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
           
-          {/* TARJETA PRINCIPAL */}
+     
           <div className="card shadow-lg border-0 rounded-4">
             
-            {/* Cabecera */}
+      
             <div className="card-header bg-dark text-white text-center py-4 rounded-top-4">
               <h2 className="fw-bold mb-0">
                 <FaEnvelopeOpenText className="me-2 text-warning" /> 
@@ -54,10 +53,10 @@ const Formulario = () => {
               <p className="small mb-0 text-white-50">Zalantzarik baduzu? Idatz iguzu!</p>
             </div>
 
-            {/* Cuerpo del formulario */}
+           
             <div className="card-body p-5 bg-white">
               
-              {/* Mensaje de Éxito */}
+            
               {bidalita && (
                 <div className="alert alert-success text-center fade show" role="alert">
                   <strong>Eskerrik asko!</strong> Zure mezua ondo jaso dugu.
@@ -66,7 +65,7 @@ const Formulario = () => {
 
               <form onSubmit={handleSubmit}>
                 
-                {/* CAMPO 1: IZENA (Nombre) */}
+              
                 <div className="mb-4">
                   <label htmlFor="izena" className="form-label fw-bold text-muted">Izena / Nombre *</label>
                   <div className="input-group">
@@ -84,7 +83,7 @@ const Formulario = () => {
                   </div>
                 </div>
 
-                {/* CAMPO 2: EMAIL (Recuperado) */}
+              
                 <div className="mb-4">
                   <label htmlFor="email" className="form-label fw-bold text-muted">Posta Elektronikoa / Email *</label>
                   <div className="input-group">
@@ -102,7 +101,7 @@ const Formulario = () => {
                   </div>
                 </div>
 
-                {/* CAMPO 3: GAIA (Asunto) */}
+               
                 <div className="mb-4">
                   <label htmlFor="gaia" className="form-label fw-bold text-muted">Gaia / Asunto *</label>
                   <select 
@@ -121,7 +120,7 @@ const Formulario = () => {
                   </select>
                 </div>
 
-                {/* CAMPO 4: MEZUA (Mensaje) */}
+               
                 <div className="mb-4">
                   <label htmlFor="mezua" className="form-label fw-bold text-muted">Mezua / Mensaje *</label>
                   <div className="input-group">
@@ -139,7 +138,7 @@ const Formulario = () => {
                   </div>
                 </div>
 
-                {/* BOTÓN DE ENVIAR */}
+              
                 <div className="d-grid gap-2">
                   <button type="submit" className="btn btn-warning fw-bold py-2 shadow-sm text-dark">
                     <FaPaperPlane className="me-2" /> Bidali Mezua

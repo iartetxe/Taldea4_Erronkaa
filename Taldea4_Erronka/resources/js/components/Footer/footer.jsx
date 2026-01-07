@@ -44,7 +44,13 @@ const Footer = () => {
               <li className="mb-2">
                 <a href="#" className="text-white text-decoration-none small hover-warning">Enkanteak</a>
               </li>
+               <li className="mb-2">
+                <Link to="/kontaktua" className="text-white text-decoration-none small hover-warning">Erosketak</Link>
+              </li>
               <li className="mb-2">
+                <Link to="/kontaktua" className="text-white text-decoration-none small hover-warning">Forua</Link>
+              </li>
+               <li className="mb-2">
                 <Link to="/kontaktua" className="text-white text-decoration-none small hover-warning">Kontaktua</Link>
               </li>
               <li className="mb-2">

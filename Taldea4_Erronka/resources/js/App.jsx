@@ -26,6 +26,8 @@ function App() {
           <Route path="erregistratu" element={<Erregistratu />} />
           <Route path='enkanteak' element={<Enkanteak/>}/>
           <Route path='erosketak' element={<Erosketak/>}/>
+          <Route path='forua'element={<Forua/>}/>
+          <Route path='ranking'element={<Ranking/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

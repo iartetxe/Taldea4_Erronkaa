@@ -1,0 +1,63 @@
+/* resources/css/forua.css */
+
+/* Títulos y textos */
+.text-gold {
+    color: #d4af37; /* El color dorado de Artetxea */
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif; /* Si tienes esta fuente, si no usa la por defecto */
+    border-bottom: 2px solid #d4af37;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+/* Tarjeta de Comentarios */
+.comment-card {
+    background-color: #fff;
+    border-left: 5px solid #d4af37; /* Borde dorado a la izquierda */
+    transition: transform 0.2s ease;
+}
+
+.comment-card:hover {
+    background-color: #fcfcfc;
+    transform: translateX(5px); /* Se mueve un poco al pasar el ratón */
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #2c2c2c;
+    color: #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Formulario de Subida (Derecha) */
+.upload-card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: 1px solid #e0e0e0;
+}
+
+.btn-artetxea {
+    background-color: #2c2c2c;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-artetxea:hover {
+    background-color: #d4af37;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.form-control:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}

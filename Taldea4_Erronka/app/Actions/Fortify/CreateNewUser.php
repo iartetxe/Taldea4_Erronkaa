@@ -3,8 +3,8 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -19,21 +19,24 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
+            'izena' => ['required', 'string', 'max:255'],
+            'abizenak' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'telefonoa' => ['required', 'string', 'max:20'],
+            'kalea' => ['required', 'string', 'max:255'],
+            'hiria' => ['required', 'string', 'max:255'],
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
-            'name' => $input['name'],
+            'izena' => $input['izena'],
+            'abizenak' => $input['abizenak'],
             'email' => $input['email'],
-            'password' => $input['password'],
+            'telefonoa' => $input['telefonoa'],
+            'kalea' => $input['kalea'],
+            'hiria' => $input['hiria'],
+            'rola' => 'Erabiltzailea', // <--- Hau da garrantzitsuena
+            'password' => Hash::make($input['password']),
         ]);
     }
 }

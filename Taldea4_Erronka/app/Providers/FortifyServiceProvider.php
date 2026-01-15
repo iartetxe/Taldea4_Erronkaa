@@ -31,6 +31,10 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+        
+        Fortify::verifyEmailView(function () {
+        return Inertia::render('Auth/VerifyEmail');
+    });
     }
 
     /**

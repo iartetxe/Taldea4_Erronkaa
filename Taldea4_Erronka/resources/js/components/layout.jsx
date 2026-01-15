@@ -1,27 +1,23 @@
+
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import Navbar from './Nav/Navbar';
-import Footer from './Footer/footer'; 
+import Footer from './Footer/footer';
 
-const Layout = () => {
-  return (
-    <div className="d-flex flex-column min-vh-100">
+import './Nav/Navbar.css'; 
+
+export default function Layout({ children }) {
+    return (
+        <div className="d-flex flex-column min-vh-100">
+           
+            <Navbar />
+
       
-      <header>
-        <Navbar />
-      </header>
+            <main className="flex-grow-1">
+                {children}
+            </main>
 
-      
-      <main className="flex-grow-1">
-        <Outlet /> 
-      </main>
-
-      <footer>
-        <Footer />
-      </footer>
-      
-    </div>
-  );
-};
-
-export default Layout;
+            
+            <Footer />
+        </div>
+    );
+}

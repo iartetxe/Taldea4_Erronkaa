@@ -30,6 +30,55 @@
 .nav-link:hover {
     color: #ffd700 !important; /* Amarillo al pasar el ratón */
 }
+.custom-navbar {
+    background-color: #1a1a1a !important; /* Asegurar fondo oscuro */
+    border-radius: 50px; /* Navbar redondeado tipo cápsula */
+    padding: 0.5rem 1rem;
+}
+
+.logo-img {
+    height: 45px;
+    width: 45px;
+    object-fit: cover;
+}
+
+/* Efecto en los enlaces del menú */
+.nav-link {
+    transition: color 0.3s ease;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-link:hover {
+    color: #d4af37 !important; /* Dorado al pasar el ratón */
+}
+
+/* Efecto estrella ranking */
+.star-effect {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.ranking-icon:hover .star-effect {
+    transform: scale(1.2) rotate(15deg);
+    color: #ffd700 !important;
+}
+
+/* NUEVO: ESTILO PARA LA CÁPSULA DE USUARIO */
+.user-badge {
+    transition: all 0.3s ease;
+}
+
+.user-badge:hover {
+    border-color: #d4af37 !important; /* Borde dorado suave al pasar el ratón */
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Efecto botones login/registro */
+.hover-scale {
+    transition: transform 0.2s;
+}
+.hover-scale:hover {
+    transform: scale(1.05);
+}
 
 @media (max-width: 991px) {
     .custom-navbar {

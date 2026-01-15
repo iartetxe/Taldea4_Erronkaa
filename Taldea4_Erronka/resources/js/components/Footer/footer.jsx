@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Importamos Link para la navegación interna
+import { Link } from '@inertiajs/react';
 import "../Footer/footer.css";
 
 // Importaciones de iconos de Font Awesome (Redes Sociales)

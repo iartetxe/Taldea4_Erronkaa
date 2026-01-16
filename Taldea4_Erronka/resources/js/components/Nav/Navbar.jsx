@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // <--- useState inportatu behar da
 import { MdStar } from 'react-icons/md';
-import { FaUserCircle } from 'react-icons/fa'; // <--- Icono Usuario
-import { BiLogOut } from 'react-icons/bi';     // <--- Icono Salir
+import { FaUserCircle } from 'react-icons/fa';
+import { BiLogOut } from 'react-icons/bi';
 import logo from '../../assets/logo-artetxea.png';
 import './Navbar.css';
 import { Link, usePage, router } from '@inertiajs/react';
@@ -9,6 +9,10 @@ import LoginModal from '../LoginModal';
 
 const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
+  
+  // EGOERA BERRIA: Menua irekita edo itxita dagoen kontrolatzeko
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
   const { auth } = usePage().props; 
   const user = auth?.user;
 
@@ -18,6 +22,9 @@ const Navbar = () => {
   const handleLogout = () => {
       router.post('/logout');
   };
+
+  // Menua ireki/itxi funtzioa
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
   return (
     <div className="container mt-4">
@@ -29,14 +36,22 @@ const Navbar = () => {
            <img src={logo} alt="Artetxea Logo" className="logo-img rounded-circle border border-dark" />
         </Link>
 
-        {/* HAMBURGUESA MOVIL */}
-        <button className="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        {/* HAMBURGUESA BOTOIA (React bidez kontrolatuta) */}
+        <button 
+            className="navbar-toggler text-white" 
+            type="button" 
+            onClick={handleNavCollapse} // <--- KLIK EGITEAN EGOERA ALDATU
+            aria-controls="navbarNav"
+            aria-expanded={!isNavCollapsed}
+            aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon" style={{ filter: 'invert(1)' }}></span>
         </button>
 
-        {/* MENU */}
-        <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
-          <ul className="navbar-nav align-items-center gap-4">
+        {/* MENU ZATIA (Egoeraren arabera erakutsi edo ezkutatu) */}
+        {/* 'show' klasea gehitzen dugu isNavCollapsed FALSE bada */}
+        <div className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse justify-content-center`} id="navbarNav">
+          <ul className="navbar-nav align-items-center gap-4 pt-3 pt-lg-0"> {/* Padding pixka bat mugikorrean */}
             <li className="nav-item"><Link className="nav-link text-white fw-bold" href="/">HASIERA</Link></li>
             <li className="nav-item"><Link className="nav-link text-white fw-bold" href="/galeria">GALERIA</Link></li>
             <li className="nav-item"><Link className="nav-link text-white fw-bold" href="/enkanteak">ENKANTEAK</Link></li>
@@ -44,7 +59,6 @@ const Navbar = () => {
             <li className="nav-item"><Link className="nav-link text-white fw-bold" href="/forua">FORUA</Link></li>
             <li className="nav-item"><Link className="nav-link text-white fw-bold" href="/kontaktua">KONTAKTUA</Link></li>
             
-            {/* RANKING ICON */}
             <li className="nav-item">
               <Link className="ranking-icon position-relative d-flex align-items-center justify-content-center text-warning" href="/ranking">
                 <MdStar size={40} className="star-effect" />
@@ -52,52 +66,33 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
-        </div>
 
-        {/* ZONA USUARIO (CAMBIADA) */}
-        <div className="d-flex align-items-center ms-auto gap-3">   
-          {user ? (
-             // SI ESTÁ LOGUEADO: DISEÑO NUEVO
-             <div className="d-flex align-items-center gap-2 user-badge p-1 pe-3 rounded-pill bg-dark border border-secondary">
-                
-                {/* Icono + Nombre */}
-                <div className="d-flex align-items-center gap-2 px-2 text-white">
-                    <FaUserCircle size={24} className="text-warning" />
-                    <span className="fw-bold small text-uppercase" style={{ letterSpacing: '1px' }}>
-                        {user.izena} {/* Usamos 'izena' si así lo guardaste, o 'name' */}
-                    </span>
-                </div>
-
-                {/* Separador vertical */}
-                <div style={{ width: '1px', height: '20px', background: '#555' }}></div>
-
-                {/* Botón Salir */}
-                <button 
-                    onClick={handleLogout} 
-                    className="btn btn-link text-danger p-0 d-flex align-items-center"
-                    title="Saioa itxi"
-                    style={{ textDecoration: 'none' }}
-                >
-                    <BiLogOut size={22} />
-                </button>
-             </div>
-          ) : (
-             // SI NO ESTÁ LOGUEADO
-             <>
-                <button 
-                    className="btn btn-outline-light btn-sm fw-bold rounded-pill px-3 hover-scale"
-                    onClick={handleShowLogin} 
-                >
-                    Saioa hasi
-                </button>
-                <Link 
-                    href="/erregistratu" 
-                    className="btn btn-warning btn-sm fw-bold rounded-pill px-3 text-dark hover-scale"
-                >
-                    Erregistratu
-                </Link>
-             </>
-          )}
+          {/* USUARIOA / LOGIN (Mugikorrean zentratuta agertzeko margin-top gehituta) */}
+          <div className="d-flex align-items-center ms-lg-auto gap-3 mt-3 mt-lg-0 justify-content-center w-100 w-lg-auto">   
+            {user ? (
+               <div className="d-flex align-items-center gap-2 user-badge p-1 pe-3 rounded-pill bg-dark border border-secondary">
+                  <div className="d-flex align-items-center gap-2 px-2 text-white">
+                      <FaUserCircle size={24} className="text-warning" />
+                      <span className="fw-bold small text-uppercase" style={{ letterSpacing: '1px' }}>
+                          {user.izena}
+                      </span>
+                  </div>
+                  <div style={{ width: '1px', height: '20px', background: '#555' }}></div>
+                  <button onClick={handleLogout} className="btn btn-link text-danger p-0 d-flex align-items-center" title="Saioa itxi">
+                      <BiLogOut size={22} />
+                  </button>
+               </div>
+            ) : (
+               <>
+                  <button className="btn btn-outline-light btn-sm fw-bold rounded-pill px-3 hover-scale" onClick={handleShowLogin}>
+                      Saioa hasi
+                  </button>
+                  <Link href="/erregistratu" className="btn btn-warning btn-sm fw-bold rounded-pill px-3 text-dark hover-scale">
+                      Erregistratu
+                  </Link>
+               </>
+            )}
+          </div>
         </div>
 
       </nav>

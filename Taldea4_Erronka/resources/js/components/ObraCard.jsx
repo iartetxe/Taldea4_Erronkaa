@@ -1,97 +1,80 @@
-import React, { useState } from 'react';
-import { FaEllipsisV, FaHeart, FaRegHeart, FaShareAlt, FaMapMarkerAlt, FaGlobe, FaInfoCircle } from 'react-icons/fa';
+import React from 'react';
+import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
+import { router, usePage } from '@inertiajs/react';
 
 const ObraCard = ({ obra }) => {
-  const [liked, setLiked] = useState(false);
+  const { auth } = usePage().props;
+
+  // Like emateko funtzioa
+  const handleLike = () => {
+    if (!auth.user) {
+      alert("Saioa hasi behar duzu bozkatzeko!");
+      return;
+    }
+    router.post(`/obra/${obra.id}/like`, {}, { preserveScroll: true });
+  };
+
+  // Partekatzeko funtzioa (Web Share API)
+  const handleShare = async () => {
+    const shareData = {
+      title: `Artetxea - ${obra.izenburua}`,
+      text: `Begira ${obra.artista}-ren obra zoragarri hau Artetxean!`,
+      url: window.location.origin + '/galeria', // Edo obraren link zehatza
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // PC-an edo nabigatzaile zaharretan: Linka kopiatu
+        await navigator.clipboard.writeText(shareData.url);
+        alert("Esteka arbelean kopiatuta!");
+      }
+    } catch (err) {
+      console.log('Error sharing:', err);
+    }
+  };
 
   return (
-    <div className="col-md-6 col-lg-4 mb-4">
-      <div className="card shadow-sm border-0 h-100 rounded-4">
+    <div className="col-md-6 col-lg-3 mb-4">
+      <div className="card h-100 border-0 shadow-sm obra-card position-relative">
         
-        {/* --- HEADER: Avatar, Título y Menú --- */}
-        <div className="card-header d-flex align-items-center bg-white border-bottom-0 pt-3 px-3 rounded-top-4">
-          
-          {/* Avatar con la inicial */}
-          <span className={`d-flex justify-content-center align-items-center rounded-circle text-white fw-bold ${obra.color}`} 
-                style={{width: '45px', height: '45px', fontSize: '1.2rem'}}>
-            {obra.avatar}
-          </span>
-          
-          <div className="ms-3">
-            <h6 className="mb-0 fw-bold text-dark">{obra.izenburua}</h6>
-            <span className="text-muted small">@{obra.artista} • {obra.data}</span>
-          </div>
-          
-          {/* Menú de 3 puntos (Opciones extra) */}
-          <div className="dropdown ms-auto">
-            <button className="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <FaEllipsisV />
-            </button>
-            <ul className="dropdown-menu dropdown-menu-end shadow border-0">
-              <li><a className="dropdown-item" href="#">Salatu (Denunciar)</a></li>
-              <li><a className="dropdown-item" href="#">Gorde (Guardar)</a></li>
-              <li><a className="dropdown-item" href="#">Profila ikusi</a></li>
-            </ul>
-          </div>
+        {/* PARTEKATU BOTOIA (Goian eskuinean) */}
+        <button 
+          onClick={handleShare}
+          className="btn btn-light rounded-circle position-absolute top-0 end-0 m-2 shadow-sm d-flex align-items-center justify-content-center"
+          style={{ width: '35px', height: '35px', zIndex: 10 }}
+          title="Partekatu"
+        >
+          <FaShareAlt size={14} className="text-dark" />
+        </button>
+
+        <div className="overflow-hidden" style={{ height: '300px' }}>
+          <img 
+            src={obra.irudia} // Ziurtatu URL osoa dela edo '/storage/...' hasten dela
+            className="card-img-top h-100 w-100" 
+            style={{ objectFit: 'cover', transition: 'transform 0.5s' }} 
+            alt={obra.izenburua} 
+          />
         </div>
-
-        {/* --- IMAGEN DE LA OBRA --- */}
-        <div style={{ height: '350px', overflow: 'hidden', cursor: 'pointer' }}> 
-            <img 
-              src={obra.img} 
-              className="card-img-top w-100 h-100 object-fit-cover" 
-              alt={obra.izenburua} 
-            />
-        </div>
-
-        {/* --- BODY: Descripción y Localización --- */}
-        <div className="card-body">
+        
+        <div className="card-body text-center">
+          <h5 className="fw-bold mb-1">{obra.izenburua}</h5>
+          <p className="text-muted small mb-3">{obra.artista}</p>
           
-          {/* Descripción */}
-          <p className="card-text text-secondary mb-3">
-            {obra.deskribapena}
-          </p>
+          <div className="d-flex justify-content-center align-items-center gap-3">
+             {/* LIKE BOTOIA */}
+             <button 
+               onClick={handleLike} 
+               className="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1"
+               style={{ color: obra.is_liked ? '#dc3545' : '#6c757d' }}
+             >
+               {obra.is_liked ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
+               <span className="fw-bold">{obra.likes_count}</span>
+             </button>
 
-          {/* SECCIÓN CLAVE: LOCALIZACIÓN (Dónde está la obra) */}
-          <div className="p-3 bg-light rounded-3 border-start border-4 border-warning">
-            <h6 className="fw-bold text-dark mb-1" style={{fontSize: '0.9rem'}}>
-              <FaInfoCircle className="me-2 text-warning"/> 
-              Non dago eskuragarri?
-            </h6>
-            
-            {/* Lógica: Si tiene URL es una web, si no, es un sitio físico */}
-            {obra.urlWeb ? (
-              <a href={obra.urlWeb} target="_blank" rel="noopener noreferrer" className="text-primary text-decoration-none fw-bold small">
-                <FaGlobe className="me-2" />
-                Webgunean ikusi ({obra.kokalekua})
-              </a>
-            ) : (
-              <span className="text-muted fw-bold small">
-                <FaMapMarkerAlt className="me-2 text-danger" />
-                {obra.kokalekua} (Fisikoa)
-              </span>
-            )}
+             <span className="badge bg-warning text-dark">{obra.mota}</span>
           </div>
-
-        </div>
-
-        {/* --- FOOTER: Botones de Acción --- */}
-        <div className="card-footer bg-white border-top-0 d-flex align-items-center py-3 px-3 rounded-bottom-4">
-          
-          {/* Like */}
-          <button 
-            className="btn btn-light rounded-circle me-2 text-center d-flex align-items-center justify-content-center" 
-            style={{width: '40px', height: '40px'}}
-            onClick={() => setLiked(!liked)}
-          >
-            {liked ? <FaHeart className="text-danger" /> : <FaRegHeart className="text-muted" />}
-          </button>
-
-          {/* Share */}
-          <button className="btn btn-light rounded-circle d-flex align-items-center justify-content-center" style={{width: '40px', height: '40px'}}>
-            <FaShareAlt className="text-muted" />
-          </button>
-
         </div>
       </div>
     </div>

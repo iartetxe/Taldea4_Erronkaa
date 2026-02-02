@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-public function run(): void
+    public function run(): void
     {
-        // 1. ADMINISTRAZAILEA (Admin)
+        // 1. Usuarios de prueba (Admin y Normal)
         User::create([
             'izena' => 'Admin',         
             'abizenak' => 'Nagusia',     
@@ -22,7 +22,6 @@ public function run(): void
             'rola' => 'Administratzailea',
         ]);
 
-        // 2. ERABILTZAILEA (Usuario Normal de Prueba)
         User::create([
             'izena' => 'Mikel',
             'abizenak' => 'Testa',
@@ -33,5 +32,9 @@ public function run(): void
             'password' => Hash::make('12345678'),
             'rola' => 'Erabiltzailea',
         ]);
+        
+        // 2. IMPORTANTE: Llamar al Seeder de Obras
+        // Si esta línea falta, la base de datos se queda vacía de obras
+        $this->call(ObrasSeeder::class);
     }
 }

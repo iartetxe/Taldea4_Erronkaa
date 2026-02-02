@@ -15,7 +15,6 @@ const Navbar = () => {
 
   const { auth } = usePage().props; 
   const user = auth?.user;
-
   const handleShowLogin = () => setShowLoginModal(true);
   const handleCloseLogin = () => setShowLoginModal(false);
 
@@ -66,6 +65,18 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
+          
+          {user && user.rola === 'Administratzailea' && (
+                <li className="nav-item">
+                    <Link 
+                        href="/admin/dashboard" 
+                        className="nav-link" 
+                        style={{ color: '#ffc107', fontWeight: 'bold' }} 
+                    >
+                        ADMIN ⚙️
+                    </Link>
+                </li>
+            )}
 
           {/* USUARIOA / LOGIN (Mugikorrean zentratuta agertzeko margin-top gehituta) */}
           <div className="d-flex align-items-center ms-lg-auto gap-3 mt-3 mt-lg-0 justify-content-center w-100 w-lg-auto">   

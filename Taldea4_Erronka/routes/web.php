@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia; // <--- Importante: Importar Inertia
+use Inertia\Inertia;
+use App\Http\Controllers\EnkanteController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,28 @@ Route::get('/erosketak', function () {
 Route::get('/enkanteak', function () {
     return Inertia::render('Enkanteak');
 })->name('enkanteak');
+use App\Http\Controllers\GaleriaController;
 
+// Galeria Publikoa
+Route::get('/galeria', [GaleriaController::class, 'index'])->name('galeria');
+
+// Ranking Publikoa
+Route::get('/ranking', [GaleriaController::class, 'ranking'])->name('ranking');
+
+// Like emateko (Login beharrezkoa)
+Route::post('/obra/{id}/like', [GaleriaController::class, 'toggleLike'])
+    ->middleware(['auth'])
+    ->name('obra.like');
+
+Route::get('/enkanteak', [EnkanteController::class, 'index'])->name('enkanteak');
+Route::post('/enkante/{id}/pujar', [EnkanteController::class, 'pujar'])
+    ->middleware(['auth'])
+    ->name('enkante.pujar');
+
+     // Admin Dashboard Ruta
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
+    ->middleware(['auth', 'admin']) // Segurtasuna: Bakarrik adminak
+    ->name('admin.dashboard');
+    
 // Si tienes rutas de Fortify (login, logout), Laravel las gestiona automáticamente,
 // pero asegúrate de que tus botones apunten a /login o /logout.

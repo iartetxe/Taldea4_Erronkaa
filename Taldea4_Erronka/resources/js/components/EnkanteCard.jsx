@@ -1,98 +1,86 @@
-import React, { useState } from 'react';
-import { FaClock, FaGavel, FaHistory } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { usePage, router } from '@inertiajs/react';
 
-const EnkanteCard = ({ obra }) => {
-  // Estado para el precio actual (simulación)
-  const [precioActual, setPrecioActual] = useState(obra.precioSalida);
-  // Estado para el input del usuario
-  const [miPuja, setMiPuja] = useState('');
-  // Estado para feedback visual (si ha pujado bien)
-  const [mensaje, setMensaje] = useState('');
+const EnkanteCard = ({ enkante }) => {
+    const { auth } = usePage().props;
+    const [bidAmount, setBidAmount] = useState('');
+    const [timeLeft, setTimeLeft] = useState('');
+    const [isEnded, setIsEnded] = useState(false);
 
-  const handlePujar = (e) => {
-    e.preventDefault();
-    const valorPuja = parseFloat(miPuja);
+    // Lógica de Cuenta Atrás
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const end = new Date(enkante.enkante_amaiera).getTime();
+            const distance = end - now;
 
-    if (!valorPuja || valorPuja <= precioActual) {
-      setMensaje('Zure pujak uneko prezioa gainditu behar du.');
-      return;
-    }
+            if (distance < 0) {
+                clearInterval(interval);
+                setIsEnded(true);
+                setTimeLeft("ITXITA / CERRADO");
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                setTimeLeft(`${days}e ${hours}h ${minutes}m`);
+            }
+        }, 1000);
 
-    // Simular éxito
-    setPrecioActual(valorPuja);
-    setMensaje(`Zorionak! Zure puja (${valorPuja}€) onartu da.`);
-    setMiPuja(''); // Limpiar input
-    
-    // Borrar mensaje a los 3 segundos
-    setTimeout(() => setMensaje(''), 3000);
-  };
+        return () => clearInterval(interval);
+    }, [enkante.enkante_amaiera]);
 
-  return (
-    <div className="col-md-6 col-lg-4 mb-4">
-      <div className="card shadow-lg border-0 h-100 rounded-4 overflow-hidden">
+    const handleBid = (e) => {
+        e.preventDefault();
+        if (!auth.user) return alert("Hasi saioa pujatzeko!");
         
-        {/* Imagen con etiqueta de tiempo */}
-        <div className="position-relative" style={{ height: '250px' }}>
-          <img 
-            src={obra.img} 
-            className="w-100 h-100 object-fit-cover" 
-            alt={obra.izenburua} 
-          />
-          <div className="position-absolute top-0 end-0 m-3 badge bg-danger fs-6 shadow">
-            <FaClock className="me-1" /> {obra.tiempoRestante}
-          </div>
-        </div>
+        router.post(`/enkante/${enkante.id}/pujar`, {
+            kopurua: bidAmount
+        }, {
+            onSuccess: () => setBidAmount(''), // Limpiar input si sale bien
+            preserveScroll: true
+        });
+    };
 
-        <div className="card-body">
-          <h5 className="fw-bold mb-1">{obra.izenburua}</h5>
-          <p className="text-muted small mb-3">@{obra.artista}</p>
+    return (
+        <div className="col-md-6 col-lg-4 mb-4">
+            <div className="card h-100 shadow border-0 overflow-hidden">
+                <div className="position-relative" style={{ height: '250px' }}>
+                    <img src={enkante.irudia} className="w-100 h-100 object-fit-cover" alt={enkante.izenburua} />
+                    <div className="position-absolute top-0 end-0 bg-danger text-white px-3 py-1 m-2 rounded-pill fw-bold small">
+                        {timeLeft}
+                    </div>
+                </div>
 
-          {/* Información de la puja */}
-          <div className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-3 border">
-            <div>
-              <span className="d-block text-secondary small fw-bold">UNEKO PREZIOA</span>
-              <span className="fs-4 fw-bold text-dark">{precioActual} €</span>
+                <div className="card-body text-center">
+                    <h5 className="fw-bold">{enkante.izenburua}</h5>
+                    <p className="text-muted small">{enkante.artista}</p>
+
+                    <div className="my-3 p-3 bg-light rounded">
+                        <p className="mb-0 text-muted small">Uneko Puja / Actual</p>
+                        <h3 className="fw-bold text-success mb-0">{parseFloat(enkante.prezioa).toLocaleString()}€</h3>
+                        {enkante.top_bidder && <small className="text-muted">Liderra: {enkante.top_bidder}</small>}
+                    </div>
+
+                    {!isEnded ? (
+                        <form onSubmit={handleBid} className="d-flex gap-2">
+                            <input 
+                                type="number" 
+                                className="form-control" 
+                                placeholder={`Min: ${parseFloat(enkante.prezioa) + 1}€`}
+                                value={bidAmount}
+                                onChange={e => setBidAmount(e.target.value)}
+                                min={parseFloat(enkante.prezioa) + 1}
+                                required
+                            />
+                            <button className="btn btn-dark fw-bold" type="submit">PUJAR</button>
+                        </form>
+                    ) : (
+                        <div className="alert alert-secondary py-2 fw-bold">Subasta amaituta</div>
+                    )}
+                </div>
             </div>
-            <div className="text-end">
-              <span className="d-block text-secondary small fw-bold">PUJAK</span>
-              <span className="badge bg-secondary rounded-pill">
-                <FaHistory className="me-1"/> {obra.pujasTotal}
-              </span>
-            </div>
-          </div>
-
-          {/* Feedback mensaje */}
-          {mensaje && (
-            <div className={`alert py-1 px-2 small mb-2 ${mensaje.includes('Zorionak') ? 'alert-success' : 'alert-danger'}`}>
-              {mensaje}
-            </div>
-          )}
-
-          {/* Formulario de puja */}
-          <form onSubmit={handlePujar} className="d-flex gap-2">
-            <input 
-              type="number" 
-              className="form-control fw-bold" 
-              placeholder={`Min: ${precioActual + 1} €`}
-              value={miPuja}
-              onChange={(e) => setMiPuja(e.target.value)}
-              min={precioActual + 1}
-            />
-            <button type="submit" className="btn btn-warning fw-bold text-dark d-flex align-items-center">
-              <FaGavel className="me-2" /> Pujar
-            </button>
-          </form>
         </div>
-        
-        <div className="card-footer bg-white border-top-0 pb-3 text-center">
-          <small className="text-muted fst-italic">
-            *Irabazlea 24 ordu barru erabakiko da.
-          </small>
-        </div>
-
-      </div>
-    </div>
-  );
+    );
 };
 
 export default EnkanteCard;

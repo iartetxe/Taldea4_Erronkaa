@@ -26,7 +26,7 @@ const Hasiera = () => {
                         ONGI ETORRI <span style={{ color: '#ffc107' }}>ARTETXERA</span>
                     </h1>
                     <p className="lead fs-3 mb-5 fw-light">
-                        Euskal Herriko artearen txoko digitala. Ezagutu, partekatu eta bizi artea.
+                        Deskubritu ezazu artearen txoko digitala. Ezagutu, partekatu eta bizi artea.
                     </p>
                     
                     {/* CALL TO ACTION BOTOIAK */}
@@ -84,7 +84,7 @@ const Hasiera = () => {
                             </div>
                             <h4 className="fw-bold">Komunitatea eta Forua</h4>
                             <p className="text-muted">
-                                Eman zure iritzia, baloratu obrak ("Like") eta parte hartu gure foruko eztabaidetan beste arte zaleekin.
+                                Eman zure iritzia, baloratu obrak eta parte hartu gure foruko eztabaidetan beste arte zaleekin.
                             </p>
                         </div>
                     </div>

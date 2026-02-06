@@ -189,10 +189,10 @@ class ObrasSeeder extends Seeder
                 'kokalekua' => 'Bilbo',
                 'prezioa' => null, // Precio actual (se calculará con pujas)
                 'hasierako_prezioa' => 100, // Precio de salida
-                'enkante_amaiera' => Carbon::now()->addDays(2), // Termina en 2 días
+                'enkante_amaiera' => Carbon::now()->addMinutes(45), // Termina en 2 días
             ],
         [
-                'izenburua' => 'PRUEBA EMAIL (3 min)',
+                'izenburua' => 'PRUEBA (3 min)',
                 'artista' => 'Tester',
                 'data' => '2025',
                 'mota' => 'modernoa',
@@ -201,11 +201,11 @@ class ObrasSeeder extends Seeder
                 'kokalekua' => 'Donostia',
                 'prezioa' => null,
                 'hasierako_prezioa' => 10, // Merkea
-                'enkante_amaiera' => Carbon::now()->addMinutes(3),
+                'enkante_amaiera' => Carbon::now()->addMinutes(1),
             ],
             [
-                'izenburua' => 'TEST DEFINITIVO (5 min)',
-                'artista' => 'Admin Test',
+                'izenburua' => 'TEST (5 min)',
+                'artista' => 'Tester',
                 'data' => '2025',
                 'mota' => 'modernoa',
                 'irudia' => '/assets/Irudiak-Galeria/Arte Moderno/Mirudi2.jpg',
@@ -214,7 +214,7 @@ class ObrasSeeder extends Seeder
                 'prezioa' => null,
                 'hasierako_prezioa' => 5, 
                 // Orain hasi eta 5 minutura amaitu
-                'enkante_amaiera' => Carbon::now()->addMinutes(3), 
+                'enkante_amaiera' => Carbon::now()->addMinutes(30), 
             ],
             // --- 2. DENDAKO PRODUKTUAK (Erosketak) --
             [

@@ -9,7 +9,7 @@
         <div class="header">
             <img src="{{ $message->embed(public_path('assets/logo-artetxea.png')) }}" 
                  alt="Artetxea Logo" 
-                 style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ffc107; margin-bottom: 10px; object-fit: cover;">
+                 style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ffc107; margin-bottom: 10px; object-fit: cover; text-align:center;">
             
             <h1>ARTETXEA</h1>
             <p style="margin: 5px 0 0 0; font-size: 14px; color: #fff;">Erosketa Konfirmazioa</p>

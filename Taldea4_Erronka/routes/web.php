@@ -86,5 +86,21 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/kontaktua', [KontaktuaController::class, 'index'])->name('kontaktua');
 Route::post('/kontaktua', [KontaktuaController::class, 'store']);
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    
+    // Panela ikusi
+    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+    // Obra sortu
+    Route::post('/obrak', [App\Http\Controllers\AdminController::class, 'store'])->name('admin.obrak.store');
+    
+    // Obra ezabatu
+    Route::delete('/obrak/{id}', [App\Http\Controllers\AdminController::class, 'destroyObra'])->name('admin.obrak.destroy');
+    
+    // Mezua ezabatu
+    Route::delete('/kontaktuak/{id}', [App\Http\Controllers\AdminController::class, 'destroyKontaktua'])->name('admin.kontaktuak.destroy');
+
+});
 // Si tienes rutas de Fortify (login, logout), Laravel las gestiona automáticamente,
 // pero asegúrate de que tus botones apunten a /login o /logout.

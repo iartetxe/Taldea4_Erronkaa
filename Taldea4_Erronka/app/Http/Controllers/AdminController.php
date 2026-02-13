@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Obra;
+use App\Models\Kontaktua;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -19,17 +20,22 @@ class AdminController extends Controller
             'salmentak' => Obra::whereNotNull('eroslea_id')->count(),
         ];
 
-        $azkenObrak = Obra::latest()->take(5)->get();
+        // Obra GUZTIAK kudeatzeko
+        $obrak = Obra::latest()->get();
+        
+        // Jendearen MEZUAK kudeatzeko
+        $kontaktuak = Kontaktua::latest()->get();
 
         return Inertia::render('Admin/Dashboard', [
             'stats' => $stats,
-            'azkenObrak' => $azkenObrak
+            'obrak' => $obrak,
+            'kontaktuak' => $kontaktuak
         ]);
     }
 
+    // --- OBRA SORTU (Lehendik zeneukana) ---
     public function store(Request $request)
     {
-        // 1. BALIDAZIOA
         $validated = $request->validate([
             'izenburua' => 'required|string|max:255',
             'artista' => 'required|string|max:255',
@@ -37,23 +43,37 @@ class AdminController extends Controller
             'mota' => 'required|string',
             'deskribapena' => 'required|string',
             'kokalekua' => 'required|string',
-            'irudia' => 'required|image|max:5120', // 5MB max
-            
-            // Hauek NULLABLE dira (Galeria bada, hutsik etorriko dira)
+            'irudia' => 'required|image|max:5120',
             'prezioa' => 'nullable|numeric', 
             'hasierako_prezioa' => 'nullable|numeric',
             'enkante_amaiera' => 'nullable|date',
         ]);
 
-        // 2. IRUDIA IGO
         if ($request->hasFile('irudia')) {
             $path = $request->file('irudia')->store('obras', 'public');
             $validated['irudia'] = '/storage/' . $path;
         }
 
-        // 3. DATU BASEAN SORTU
         Obra::create($validated);
-
         return back()->with('success', 'Obra ondo igo da!');
+    }
+
+    // --- OBRA EZABATU (Berria) ---
+    public function destroyObra($id)
+    {
+        $obra = Obra::findOrFail($id);
+        // Nahi baduzu irudia ere ezabatu diskotik:
+        // if ($obra->irudia && str_starts_with($obra->irudia, '/storage/')) {
+        //     Storage::disk('public')->delete(str_replace('/storage/', '', $obra->irudia));
+        // }
+        $obra->delete();
+        return back()->with('success', 'Obra ondo ezabatu da!');
+    }
+
+    // --- MEZUA EZABATU (Berria) ---
+    public function destroyKontaktua($id)
+    {
+        Kontaktua::findOrFail($id)->delete();
+        return back()->with('success', 'Mezua ezabatu da!');
     }
 }

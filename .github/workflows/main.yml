@@ -18,12 +18,20 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # 1. Preparar directorios y permisos
             sudo mkdir -p /var/www/html
             sudo chown -R ubuntu:ubuntu /var/www/html
             cd /var/www/html
-            if [ ! -d "Taldea4_Erronkaa" ]; then
-              git clone https://github.com/${{ github.repository }}.git Taldea4_Erronkaa
+
+            # 2. Si la carpeta existe, la borramos para asegurar una copia limpia sin errores de nombres
+            if [ -d "Taldea4_Erronkaa" ]; then
+              rm -rf Taldea4_Erronkaa
             fi
+
+            # 3. Clonar el repositorio fresco
+            git clone https://github.com/${{ github.repository }}.git Taldea4_Erronkaa
             cd Taldea4_Erronkaa
-            git pull origin main
+
+            # 4. Levantar con Docker
+            # Usamos el nombre exacto sin espacios
             docker compose up -d --build

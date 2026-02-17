@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Obra;
 use App\Models\Kontaktua;
+use App\Models\ForuProposamena;
 use Illuminate\Support\Facades\Mail; 
 use App\Mail\KontaktuaErantzuna;    
 
@@ -24,12 +25,16 @@ class AdminController extends Controller
         $obrak = Obra::latest()->get();
         $kontaktuak = Kontaktua::latest()->get();
         $erabiltzaileak = User::latest()->get();
+        
+        // <--- RETURN BAINO LEHENAGO SARTU DUGU HAU:
+        $foruProposamenak = ForuProposamena::with('user')->latest()->get(); 
 
         return Inertia::render('Admin/Dashboard', [
             'stats' => $stats,
             'obrak' => $obrak,
             'kontaktuak' => $kontaktuak,
-            'erabiltzaileak' => $erabiltzaileak 
+            'erabiltzaileak' => $erabiltzaileak,
+            'foruProposamenak' => $foruProposamenak
         ]);
     }
 
@@ -92,5 +97,10 @@ class AdminController extends Controller
         $mezua->delete();
 
         return back()->with('success', 'Erantzuna ondo bidali zaio erabiltzaileari eta mezua ezabatu da!');
+    }
+
+    public function destroyForuProposamena($id) {
+        ForuProposamena::findOrFail($id)->delete();
+        return back()->with('success', 'Proposamena ezabatu da.');
     }
 }

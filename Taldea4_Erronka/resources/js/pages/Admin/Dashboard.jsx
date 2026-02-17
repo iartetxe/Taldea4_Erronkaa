@@ -106,6 +106,11 @@ const Dashboard = ({ stats, obrak, kontaktuak, erabiltzaileak }) => {
                             <span style={{ color: activeTab === 'erabiltzaileak' ? '#ffc107' : '#000000' }}><FaUsers className="me-2"/> Erabiltzaileak</span>
                         </button>
                     </li>
+                    <li className="nav-item flex-fill">
+                        <button className={`nav-link w-100 py-3 transition-all ${activeTab === 'proposamenak' ? 'active bg-dark border-warning border-3 border-bottom' : 'bg-white border-0 opacity-75'}`} onClick={() => setActiveTab('proposamenak')} style={{ borderRadius: '8px 8px 0 0' }}>
+                            <span style={{ color: activeTab === 'proposamenak' ? '#ffc107' : '#000000' }}>🖼️ Foru Proposamenak {foruProposamenak?.length > 0 && <span className="badge bg-danger ms-2 rounded-pill fs-6 text-white">{foruProposamenak.length}</span>}</span>
+                        </button>
+                    </li>
                 </ul>
 
                 {/* --- 1. FITXA: OBRAK --- */}
@@ -201,6 +206,32 @@ const Dashboard = ({ stats, obrak, kontaktuak, erabiltzaileak }) => {
                         </div>
                     </div>
                 )}
+                {/* --- 4. FITXA: FORU PROPOSAMENAK --- */}
+                    {activeTab === 'proposamenak' && (
+                        <div className="row g-4">
+                            {foruProposamenak.length === 0 ? (<div className="col-12"><div className="alert alert-info text-center fs-5">Ez dago obrarik berrikusteko.</div></div>) : null}
+                            {foruProposamenak.map((prop) => (
+                                <div className="col-md-6" key={prop.id}>
+                                    <div className="card h-100 border-0 shadow-sm">
+                                        <img src={prop.irudia} className="card-img-top" style={{ height: '300px', objectFit: 'contain', backgroundColor: '#f8f9fa' }} alt={prop.izenburua} />
+                                        <div className="card-body border-top border-warning border-4">
+                                            <h4 className="fw-bold">{prop.izenburua}</h4>
+                                            <p className="text-muted mb-2">👤 Egilea: <strong>{prop.user?.izena} {prop.user?.abizena}</strong></p>
+                                            <div className="bg-light p-3 rounded fst-italic">"{prop.deskribapena}"</div>
+                                        </div>
+                                        <div className="card-footer bg-white border-0 d-flex justify-content-between pt-0">
+                                            <a href={prop.irudia} target="_blank" download={`Obra_${prop.izenburua}.jpg`} className="btn btn-success fw-bold">
+                                                ⬇️ Deskargatu
+                                            </a>
+                                            <button onClick={() => { if(confirm('Ziur ezabatu nahi duzula?')) router.delete(`/admin/foru-proposamenak/${prop.id}`); }} className="btn btn-outline-danger">
+                                                <FaTrash />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
             </div>
 
             {/* --- MODAL PARA REDACTAR EL EMAIL DE RESPUESTA --- */}

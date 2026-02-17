@@ -8,6 +8,7 @@ use App\Http\Controllers\ErosketaController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\KontaktuaController;
 use App\Http\Controllers\ProfilaController;
+use App\Http\Controllers\ForuaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,12 +104,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/kontaktuak/{id}', [App\Http\Controllers\AdminController::class, 'destroyKontaktua'])->name('admin.kontaktuak.destroy');
 
     Route::delete('/erabiltzaileak/{id}', [App\Http\Controllers\AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+    
     Route::post('/kontaktuak/{id}/erantzun', [App\Http\Controllers\AdminController::class, 'erantzunMezua'])->name('admin.kontaktuak.erantzun');
+
+    Route::delete('/admin/foru-proposamenak/{id}', [App\Http\Controllers\AdminController::class, 'destroyForuProposamena'])->name('admin.foru_proposamenak.destroy');
 });
 // --- ERABILTZAILEAREN PROFILA (Logeatuta daudenentzat bakarrik) ---
 Route::middleware(['auth'])->group(function () {
     Route::get('/profila', [ProfilaController::class, 'index'])->name('profila.index');
     Route::put('/profila', [ProfilaController::class, 'update'])->name('profila.update');
 });
+// --- FORUA ---
+Route::get('/forua', [ForuaController::class, 'index'])->name('forua');
+Route::post('/forua/proposamena', [ForuaController::class, 'store'])->middleware('auth');
 // Si tienes rutas de Fortify (login, logout), Laravel las gestiona automáticamente,
 // pero asegúrate de que tus botones apunten a /login o /logout.

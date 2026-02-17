@@ -1,10 +1,10 @@
 FROM httpd:2.4-alpine
 
-# 1. Limpiamos TODO lo que haya en la carpeta de la web del contenedor
+# 1. Limpiamos la carpeta de Apache
 RUN rm -rf /usr/local/apache2/htdocs/*
 
-# 2. Copiamos solo el CONTENIDO de tu carpeta de la web a la raíz de Apache
-# IMPORTANTE: El punto al final de la ruta de origen y destino es clave
-COPY ./Taldea4_Erronka/ /usr/local/apache2/htdocs/
+# 2. Copiamos SOLO el contenido de la carpeta public al servidor
+# Nota: La ruta debe ser la carpeta donde tienes el index.html real
+COPY ./Taldea4_Erronka/public/ /usr/local/apache2/htdocs/
 
 EXPOSE 80

@@ -2,7 +2,7 @@ name: Deploy React to EC2
 
 on:
   push:
-    branches: [ main ] # Se activa automáticamente cuando haces push a main
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -18,15 +18,18 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. Entrar en la carpeta del proyecto
-            cd /var/www/html/Taldea4_Erronkaa || { echo "Error: Carpeta no encontrada"; exit 1; }
+            # 1. Entrar en la carpeta y asegurar que Git la reconoce
+            cd /var/www/html/Taldea4_Erronkaa || { echo "Carpeta no encontrada"; exit 1; }
+            sudo git config --global --add safe.directory /var/www/html/Taldea4_Erronkaa
             
-            # 2. Bajar los cambios de GitHub (Trae el nuevo docker-compose.yml y código)
-            git pull origin main
+            # 2. Forzar la actualización para que aparezca el docker-compose.yml
+            sudo git fetch --all
+            sudo git reset --hard origin/main
             
-            # 3. Limpiar contenedores previos para liberar el puerto 80
+            # 3. Parar contenedores antiguos (el || true evita que falle si no existen)
             sudo docker stop mi_web || true
             sudo docker rm mi_web || true
             
-            # 4. Construir y levantar la nueva versión
-            sudo docker compose up -d --build
+            # 4. Levantar con la nueva configuración
+            # Usamos la ruta completa para que Docker no se pierda
+            sudo docker compose -f /var/www/html/Taldea4_Erronkaa/docker-compose.yml up -d --build

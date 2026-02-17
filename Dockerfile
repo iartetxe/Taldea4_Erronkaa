@@ -1,7 +1,7 @@
 # 1. Imagen base con PHP 8.2 y Apache
 FROM php:8.2-apache
 
-# 2. Instalar dependencias del sistema, Node.js (v18) y herramientas de compresión
+# 2. Instalar dependencias del sistema, Node.js y herramientas de compresión
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y \
 # 3. Copiar Composer desde la imagen oficial
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 4. Habilitar el módulo rewrite de Apache para Laravel
+# 4. Habilitar el módulo rewrite de Apache
 RUN a2enmod rewrite
 
-# 5. Configurar el DocumentRoot para que apunte a la carpeta public de tu proyecto
+# 5. Configurar el DocumentRoot a la carpeta public de tu subproyecto
 ENV APACHE_DOCUMENT_ROOT /var/www/html/Taldea4_Erronka/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
@@ -39,7 +39,7 @@ RUN mkdir -p /var/www/html/Taldea4_Erronka/database && \
     cp /var/www/html/Taldea4_Erronka/.env.example /var/www/html/Taldea4_Erronka/.env && \
     php /var/www/html/Taldea4_Erronka/artisan key:generate --force
 
-# 10. Permisos finales para el usuario www-data
+# 10. Permisos finales para el servidor web
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/Taldea4_Erronka/storage /var/www/html/Taldea4_Erronka/bootstrap/cache /var/www/html/Taldea4_Erronka/database
 

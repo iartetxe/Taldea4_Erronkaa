@@ -18,29 +18,23 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. Entrar a la carpeta del repositorio
+            # Entrar en la carpeta del repositorio
             cd /var/www/html/Taldea4_Erronkaa || { echo "Carpeta no encontrada"; exit 1; }
 
-            # 2. Sincronización total con el repositorio de GitHub
+            # Sincronizar código con GitHub ignorando cambios locales
             sudo git config --global --add safe.directory /var/www/html/Taldea4_Erronkaa
             sudo git fetch --all
             sudo git reset --hard origin/main
 
-            # 3. Levantar Docker forzando el build (para que ejecute npm run build de Vite)
+            # Reconstruir imagen de Docker (Ejecuta composer y npm build)
             sudo docker compose up -d --build
 
-            # 4. Pausa de seguridad para que el contenedor arranque
+            # Pausa para asegurar el arranque del contenedor
             sleep 10
 
-            # 5. Ejecutar migraciones (Arregla el error de "no such table: sessions")
+            # Ejecutar migraciones para crear las tablas
             sudo docker exec mi_web php Taldea4_Erronka/artisan migrate --force
-
-            # 6. Generar clave si no existe y limpiar caches
-            sudo docker exec mi_web php Taldea4_Erronka/artisan key:generate --force || true
+            
+            # Limpiar cachés y ajustar permisos de BD
             sudo docker exec mi_web php Taldea4_Erronka/artisan config:cache
-            sudo docker exec mi_web php Taldea4_Erronka/artisan view:clear
-
-            # 7. Asegurar permisos finales para que Apache pueda escribir y leer el Build de Vite
-            sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/storage
             sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/database
-            sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/public

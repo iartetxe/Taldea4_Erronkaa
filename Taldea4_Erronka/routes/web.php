@@ -107,7 +107,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     
     Route::post('/kontaktuak/{id}/erantzun', [App\Http\Controllers\AdminController::class, 'erantzunMezua'])->name('admin.kontaktuak.erantzun');
 
-    Route::delete('/admin/foru-proposamenak/{id}', [App\Http\Controllers\AdminController::class, 'destroyForuProposamena'])->name('admin.foru_proposamenak.destroy');
+    Route::delete('/foru-proposamenak/{id}', [App\Http\Controllers\AdminController::class, 'destroyForuProposamena'])->name('admin.foru_proposamenak.destroy');
 });
 // --- ERABILTZAILEAREN PROFILA (Logeatuta daudenentzat bakarrik) ---
 Route::middleware(['auth'])->group(function () {
@@ -117,5 +117,11 @@ Route::middleware(['auth'])->group(function () {
 // --- FORUA ---
 Route::get('/forua', [ForuaController::class, 'index'])->name('forua');
 Route::post('/forua/proposamena', [ForuaController::class, 'store'])->middleware('auth');
+// GALERIA ETA RANKING
+Route::get('/galeria', [GaleriaController::class, 'index'])->name('galeria');
+Route::get('/ranking', [GaleriaController::class, 'ranking'])->name('ranking');
+
+// LIKE BOTOIA SAKATZEAN (Auth middleware-a du, ezin da kanpotik erabili)
+Route::post('/obrak/{id}/like', [GaleriaController::class, 'toggleLike'])->middleware('auth')->name('obrak.like');
 // Si tienes rutas de Fortify (login, logout), Laravel las gestiona automáticamente,
 // pero asegúrate de que tus botones apunten a /login o /logout.

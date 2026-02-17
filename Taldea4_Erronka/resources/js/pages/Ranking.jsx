@@ -1,62 +1,59 @@
 import React from 'react';
 import { Head } from '@inertiajs/react';
-import '../../css/ranking.css';
+import { FaTrophy, FaHeart, FaMedal } from 'react-icons/fa';
 
-// Importamos imágenes reales tuyas (asegúrate de que existen o cambia la ruta)
-import img1 from '../assets/Irudiak-Galeria/Arte Moderno/Mirudi1.jpg';
-import img2 from '../assets/Irudiak-Galeria/Arte Urbano/Uirudi5.jpg';
-import img3 from '../assets/Irudiak-Galeria/Eskulturak/Eskul1.jpg';
-import img4 from '../assets/Irudiak-Galeria/Arte Klasiko/Kirudi2.jpg';
-
-const topObras = [
-    { id: 1, izenburua: 'Gaueko Ametsa', egilea: 'Maite A.', irudia: img1, likes: 342 },
-    { id: 2, izenburua: 'Hiri Galdua', egilea: 'Iker G.', irudia: img2, likes: 298 },
-    { id: 3, izenburua: 'Harrizko Begirada', egilea: 'Lorea T.', irudia: img3, likes: 156 },
-    { id: 4, izenburua: 'Dama Klasikoa', egilea: 'Mikel P.', irudia: img4, likes: 98 },
-];
-
-const Ranking = () => {
+const Ranking = ({ ranking }) => {
     return (
-        <>
+        <div className="bg-light min-vh-100 d-flex flex-column">
             <Head title="Asteko Ranking-a" />
-            
-            {/* Cabecera Estilizada */}
-            <div className="ranking-header text-center">
-                <div className="container">
-                    <h1 className="display-3 fw-bold mb-3" style={{ fontFamily: 'Playfair Display' }}>ASTEKO RANKING-A ⭐</h1>
-                    <p className="lead text-white-50">Gure komunitateak gehien maite dituen obrak.</p>
+            <div className="container py-5 flex-grow-1">
+                <div className="text-center mb-5">
+                    <h1 className="fw-bold text-dark display-4"><FaTrophy className="text-warning me-3" />Asteko Ranking-a</h1>
+                    <p className="text-muted fs-5">Hemen ikus ditzakezu erabiltzaileen gogokoen diren obrak. Astero irabazle bat egongo da!</p>
                 </div>
-            </div>
 
-            <div className="container pb-5">
-                <div className="row g-4 justify-content-center">
-                    {topObras.map((obra, index) => (
-                        <div key={obra.id} className="col-md-6 col-lg-3">
-                            <div className="ranking-card h-100 rounded-3 shadow-sm">
-                                
-                                {/* Lógica de Medallas */}
-                                {index === 0 && <div className="medal medal-1">1</div>}
-                                {index === 1 && <div className="medal medal-2">2</div>}
-                                {index === 2 && <div className="medal medal-3">3</div>}
-
-                                <div className="ranking-img-container">
-                                    <img src={obra.irudia} alt={obra.izenburua} />
-                                </div>
-
-                                <div className="card-body text-center p-4">
-                                    <h5 className="fw-bold mb-1 text-uppercase">{obra.izenburua}</h5>
-                                    <p className="text-muted small mb-3">Egilea: {obra.egilea}</p>
+                <div className="row justify-content-center">
+                    <div className="col-md-8">
+                        {ranking.length === 0 && <div className="alert alert-info text-center">Oraindik ez dago obrarik ranking-ean.</div>}
+                        
+                        {ranking.map((obra, index) => (
+                            <div key={obra.id} className={`card border-0 shadow-sm rounded-4 mb-4 overflow-hidden ${index === 0 ? 'border-warning border border-3' : ''}`}>
+                                <div className="row g-0 align-items-center">
                                     
-                                    <div className="likes-badge">
-                                        ❤ {obra.likes} Likes
+                                    {/* POSTUA (1, 2, 3... Podioa) */}
+                                    <div className="col-md-2 text-center py-4 bg-light h-100 d-flex flex-column justify-content-center">
+                                        {index === 0 ? <FaTrophy className="text-warning display-4 mb-2 mx-auto" /> :
+                                         index === 1 ? <FaMedal className="text-secondary display-5 mb-2 mx-auto" /> :
+                                         index === 2 ? <FaMedal className="display-5 mb-2 mx-auto" style={{color: '#cd7f32'}} /> :
+                                         <h2 className="fw-bold text-muted mb-0">#{index + 1}</h2>}
                                     </div>
+                                    
+                                    {/* IRUDIA */}
+                                    <div className="col-md-3">
+                                        <img src={obra.irudia} className="img-fluid" style={{ height: '150px', width: '100%', objectFit: 'cover' }} alt={obra.izenburua} />
+                                    </div>
+
+                                    {/* INFORMAZIOA ETA LIKES */}
+                                    <div className="col-md-7">
+                                        <div className="card-body d-flex justify-content-between align-items-center px-4">
+                                            <div>
+                                                <h4 className="fw-bold mb-1 text-dark">{obra.izenburua}</h4>
+                                                <p className="text-muted mb-0 fs-5">{obra.artista}</p>
+                                            </div>
+                                            <div className="text-center bg-danger bg-opacity-10 text-danger rounded-4 py-2 px-4 shadow-sm">
+                                                <FaHeart className="fs-4 d-block mx-auto mb-1" />
+                                                <span className="fw-bold fs-4">{obra.likes_count}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

@@ -2,67 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Obra;
-use App\Models\Like;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Obra;
+use App\Models\Like; // Gogoratu hau inportatzea
 use Illuminate\Support\Facades\Auth;
 
 class GaleriaController extends Controller
 {
     // 1. GALERIA ERAKUTSI
-    public function index()
+   public function index()
     {
-        // Obrak lortu, like kopuruarekin eta erabiltzaileak like eman dion markatuta
-        $obrak = Obra::withCount('likes')->get()->map(function ($obra) {
-            return [
-                'id' => $obra->id,
-                'izenburua' => $obra->izenburua,
-                'artista' => $obra->artista,
-                'irudia' => $obra->irudia, // Ruta osoa beharko litzateke agian
-                'mota' => $obra->mota,
-                'deskribapena' => $obra->deskribapena,
-                'likes_count' => $obra->likes_count,
-                'is_liked' => Auth::check() ? $obra->isLikedBy(Auth::user()) : false,
-            ];
-        });
+        // OBRA GUZTIAK kargatuko ditugu
+        $obrak = Obra::withCount('likes') 
+            ->get()
+            ->map(function ($obra) {
+                return [
+                    'id' => $obra->id,
+                    'izenburua' => $obra->izenburua,
+                    'artista' => $obra->artista,
+                    'irudia' => $obra->irudia,
+                    'mota' => $obra->mota,
+                    'kokalekua' => $obra->kokalekua,
+                    'likes_count' => $obra->likes_count,
+                    'is_liked' => Auth::check() ? $obra->likes()->where('user_id', Auth::id())->exists() : false,
+                ];
+            });
 
         return Inertia::render('Galeria', [
-            'obras' => $obrak // React-era bidaltzen dugu
+            'obrak' => $obrak
         ]);
     }
 
-    // 2. LIKE EMAN / KENDU (Toggle)
+    // 2. LIKE EMAN EDO KENDU
     public function toggleLike($id)
     {
-        $user = Auth::user();
-        if (!$user) return redirect()->back(); // Login gabe ezin da
+        $obra = Obra::findOrFail($id);
+        $userId = Auth::id();
 
-        $like = Like::where('user_id', $user->id)->where('obra_id', $id)->first();
+        // Begiratu ea lehendik like-a emanda daukagun
+        $like = Like::where('obra_id', $obra->id)->where('user_id', $userId)->first();
 
         if ($like) {
-            $like->delete(); // Like bazuen, kendu
+            // Bageneukan, ezabatu egingo dugu (Unlike)
+            $like->delete();
         } else {
+            // Ez geneukan, sortu egingo dugu (Like)
             Like::create([
-                'user_id' => $user->id,
-                'obra_id' => $id
-            ]); // Ez bazuen, sortu
+                'obra_id' => $obra->id,
+                'user_id' => $userId
+            ]);
         }
-
-        return redirect()->back(); // Orrialdea freskatu datu berriekin
+        
+        // Atzera itzuli eta React-ek automatikoki datu berriak kargatuko ditu
+        return back();
     }
 
-    // 3. RANKING ORRIA
+   // 3. RANKING ORRIA
     public function ranking()
     {
-        // 10 obra bozkatuenak lortu
-        $topObras = Obra::withCount('likes')
-            ->orderBy('likes_count', 'desc')
-            ->take(10)
+        // Obra GUZTIAK kargatu, like kopuruaren arabera ordenatuta (TOP 10)
+        $ranking = Obra::withCount('likes')
+            ->orderByDesc('likes_count')
+            ->take(10) 
             ->get();
 
         return Inertia::render('Ranking', [
-            'topObras' => $topObras
+            'ranking' => $ranking
         ]);
     }
 }

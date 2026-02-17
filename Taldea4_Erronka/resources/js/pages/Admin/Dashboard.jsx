@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Head, usePage, useForm, router } from '@inertiajs/react';
 import { FaTrash, FaReply, FaEnvelope, FaPalette, FaUsers } from 'react-icons/fa';
 
-const Dashboard = ({ stats, obrak, kontaktuak, erabiltzaileak }) => {
+const Dashboard = ({ stats, obrak, kontaktuak, erabiltzaileak, foruProposamenak = [] }) => {
     const { auth } = usePage().props;
     const [showModal, setShowModal] = useState(false);
     

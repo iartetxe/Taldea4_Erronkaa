@@ -18,11 +18,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. Ir al directorio donde están los archivos
+            # 1. Entrar en la carpeta del proyecto en el servidor
             cd /var/www/html/Taldea4_Erronkaa
             
-            # 2. Bajar los últimos cambios de GitHub
+            # 2. Bajar los cambios que acabas de subir desde tu PC
             git pull origin main
             
-            # 3. Levantar Docker (Forzamos el nombre del archivo para que no haya dudas)
-            docker compose -f docker-compose.yml up -d --build
+            # 3. Levantar los contenedores (usando el archivo que ya vimos que existe)
+            docker compose up -d --build

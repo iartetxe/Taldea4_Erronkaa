@@ -11,29 +11,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy via SSH to EC2
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: 100.53.191.96  # <--- Nueva IP detectada
+          host: 54.242.1.46
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 120s
-          command_timeout: 15m
           script: |
             cd /var/www/html/Taldea4_Erronkaa || exit 1
+            
+            # 1. Bajar el código nuevo
             sudo git config --global --add safe.directory /var/www/html/Taldea4_Erronkaa
             sudo git fetch --all
             sudo git reset --hard origin/main
             
-            # Limpiar para evitar que se llene el disco de la instancia
-            sudo docker system prune -f
-            
-            # Construir con la nueva configuración
+            # 2. Reconstruir el contenedor (tardará unos minutos por el 'npm install')
             sudo docker compose up -d --build
             
-            sleep 15
-            
-            # Migraciones y permisos
+            # 3. Dar tiempo a que arranque y ejecutar migraciones (Arregla el error 'no such table: sessions')
+            sleep 10
             sudo docker exec mi_web php Taldea4_Erronka/artisan migrate --force
-            sudo docker exec mi_web php Taldea4_Erronka/artisan config:cache
+            
+            # 4. Limpiar permisos de la base de datos
             sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/database

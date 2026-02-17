@@ -14,33 +14,26 @@ jobs:
       - name: Deploy via SSH to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: 54.242.1.46
+          host: 100.53.191.96  # <--- Nueva IP detectada
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          # Aumentamos los tiempos de espera por si hay latencia en la red
-          timeout: 60s
-          command_timeout: 10m
+          timeout: 120s
+          command_timeout: 15m
           script: |
-            # 1. Entrar en la carpeta del repositorio
-            cd /var/www/html/Taldea4_Erronkaa || { echo "Carpeta no encontrada"; exit 1; }
-
-            # 2. Sincronizar el código ignorando cualquier cambio local
+            cd /var/www/html/Taldea4_Erronkaa || exit 1
             sudo git config --global --add safe.directory /var/www/html/Taldea4_Erronkaa
             sudo git fetch --all
             sudo git reset --hard origin/main
-
-            # 3. Reconstruir la imagen de Docker (ejecuta composer install y npm run build)
+            
+            # Limpiar para evitar que se llene el disco de la instancia
+            sudo docker system prune -f
+            
+            # Construir con la nueva configuración
             sudo docker compose up -d --build
-
-            # 4. Pausa para permitir que el contenedor inicie sus servicios
-            sleep 10
-
-            # 5. Ejecutar migraciones para crear las tablas (como la de 'sessions')
+            
+            sleep 15
+            
+            # Migraciones y permisos
             sudo docker exec mi_web php Taldea4_Erronka/artisan migrate --force
-
-            # 6. Limpiar cachés de Laravel
             sudo docker exec mi_web php Taldea4_Erronka/artisan config:cache
-            sudo docker exec mi_web php Taldea4_Erronka/artisan view:clear
-
-            # 7. Asegurar que los permisos de la base de datos sean correctos
             sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/database

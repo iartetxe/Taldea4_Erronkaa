@@ -15,7 +15,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: 54.242.1.46
-          username: zubiri
+          username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # 1. Entrar en la carpeta (si no existe, el script se detiene)

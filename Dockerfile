@@ -1,6 +1,5 @@
-FROM ubuntu:22.04
+FROM httpd:2.4-alpine
 
-RUN apt-get update && apt-get install -y apache2 && apt-get clean
-COPY Taldea4_Erronkaa /var/www/html/
+COPY . /usr/local/apache2/htdocs/
+
 EXPOSE 80
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

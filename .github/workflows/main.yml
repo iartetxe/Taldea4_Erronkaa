@@ -1,7 +1,9 @@
 name: Deploy React to EC2
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -9,22 +11,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy via SSH
+      - name: Deploy via SSH to AWS
         uses: appleboy/ssh-action@master
         with:
           host: 54.242.1.46
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /var/www/html
-            # 1. Borramos la carpeta antigua para que no haya archivos duplicados o mal nombrados
-            sudo rm -rf Taldea4_Erronkaa
+            # 1. Ir al directorio donde están los archivos
+            cd /var/www/html/Taldea4_Erronkaa
             
-            # 2. Clonamos el repositorio actualizado
-            git clone https://github.com/${{ github.repository }}.git Taldea4_Erronkaa
+            # 2. Bajar los últimos cambios de GitHub
+            git pull origin main
             
-            # 3. ENTRAR en la carpeta donde está el docker-compose.yml
-            cd Taldea4_Erronkaa
-            
-            # 4. Ahora sí, levantamos Docker (asegúrate de que el nombre no tenga espacios)
-            docker compose up -d --build
+            # 3. Levantar Docker (Forzamos el nombre del archivo para que no haya dudas)
+            docker compose -f docker-compose.yml up -d --build

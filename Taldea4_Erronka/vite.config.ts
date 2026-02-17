@@ -7,7 +7,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.jsx'],
+            // CORRECCIÓN: 'App.jsx' con A mayúscula para que coincida con tu archivo
+            input: ['resources/css/app.css', 'resources/js/App.jsx'],
             ssr: 'resources/js/ssr.jsx',
             refresh: true,
         }),
@@ -24,12 +25,11 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
-    server:{
-        host:'0.0.0.0',
-        port:5173,
-        hmr:{
-            host:"10.14.1.19",
-            port: 5173,
+    // Limpiamos la configuración de server para evitar conflictos en Docker
+    server: {
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
         },
     }
 });

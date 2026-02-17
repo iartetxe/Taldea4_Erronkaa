@@ -1,4 +1,4 @@
-name: Deploy Laravel Inertia Project
+name: Deploy Laravel Project
 
 on:
   push:
@@ -18,22 +18,29 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Entrar en la carpeta del repositorio
+            # 1. Entrar a la carpeta del repositorio
             cd /var/www/html/Taldea4_Erronkaa || { echo "Carpeta no encontrada"; exit 1; }
-            
-            # Sincronizar el código con GitHub
+
+            # 2. Sincronización total con el repositorio de GitHub
             sudo git config --global --add safe.directory /var/www/html/Taldea4_Erronkaa
             sudo git fetch --all
             sudo git reset --hard origin/main
-            
-            # Levantar los contenedores y reconstruir la imagen (compila Vite aquí)
+
+            # 3. Levantar Docker forzando el build (para que ejecute npm run build de Vite)
             sudo docker compose up -d --build
-            
-            # Pausa para asegurar que el contenedor PHP esté listo
+
+            # 4. Pausa de seguridad para que el contenedor arranque
             sleep 10
-            
-            # Ejecutar migraciones (Crea las tablas necesarias para Inertia)
+
+            # 5. Ejecutar migraciones (Arregla el error de "no such table: sessions")
             sudo docker exec mi_web php Taldea4_Erronka/artisan migrate --force
-            
-            # Re-asegurar permisos de la base de datos tras la migración
+
+            # 6. Generar clave si no existe y limpiar caches
+            sudo docker exec mi_web php Taldea4_Erronka/artisan key:generate --force || true
+            sudo docker exec mi_web php Taldea4_Erronka/artisan config:cache
+            sudo docker exec mi_web php Taldea4_Erronka/artisan view:clear
+
+            # 7. Asegurar permisos finales para que Apache pueda escribir y leer el Build de Vite
+            sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/storage
             sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/database
+            sudo docker exec mi_web chown -R www-data:www-data /var/www/html/Taldea4_Erronka/public

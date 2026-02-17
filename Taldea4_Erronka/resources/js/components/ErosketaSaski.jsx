@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom'; // <--- HAU INPORTATU BERRI DA
+import { createPortal } from 'react-dom';
 import '../../css/saski.css';
 import { FaTimes, FaTrash, FaArrowLeft, FaCreditCard } from 'react-icons/fa';
 import { usePage } from '@inertiajs/react';

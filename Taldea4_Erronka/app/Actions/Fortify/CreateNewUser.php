@@ -20,20 +20,20 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             'izena' => ['required', 'string', 'max:255'],
-            'abizenak' => ['required', 'string', 'max:255'],
+            'abizena' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'telefonoa' => ['required', 'string', 'max:20'],
-            'kalea' => ['required', 'string', 'max:255'],
+            'helbidea' => ['required', 'string', 'max:255'],
             'hiria' => ['required', 'string', 'max:255'],
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
             'izena' => $input['izena'],
-            'abizenak' => $input['abizenak'],
+            'abizena' => $input['abizena'],
             'email' => $input['email'],
             'telefonoa' => $input['telefonoa'],
-            'kalea' => $input['kalea'],
+            'helbidea' => $input['helbidea'],
             'hiria' => $input['hiria'],
             'rola' => 'Erabiltzailea', // <--- Hau da garrantzitsuena
             'password' => Hash::make($input['password']),

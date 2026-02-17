@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Obra;
 use App\Models\CartItem;
-use Inertia\Inertia; // <--- HAU GEHITU BEHAR DA
+use Inertia\Inertia; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ErosketaEgina;
@@ -45,7 +45,7 @@ class ErosketaController extends Controller
     {
         $request->validate([
             'bidalketa.izena' => 'required',
-            'bidalketa.abizenak' => 'required',
+            'bidalketa.abizena' => 'required',
             'bidalketa.helbidea' => 'required',
             'bidalketa.hiria' => 'required',
             'bidalketa.pk' => 'required',

@@ -38,7 +38,7 @@
 
         <div style="background-color: #f0f0f0; padding: 15px; margin-top: 20px; border-radius: 5px;">
             <h3 style="margin-top: 0; color: #555;">📦 Bidalketa Datuak:</h3>
-            <p style="margin: 5px 0;"><strong>Izena:</strong> {{ $bidalketa['izena'] }} {{ $bidalketa['abizenak'] }}</p>
+            <p style="margin: 5px 0;"><strong>Izena:</strong> {{ $bidalketa['izena'] }} {{ $bidalketa['abizena'] }}</p>
             <p style="margin: 5px 0;"><strong>Helbidea:</strong> {{ $bidalketa['helbidea'] }}</p>
             <p style="margin: 5px 0;"><strong>Herria:</strong> {{ $bidalketa['pk'] }} - {{ $bidalketa['hiria'] }}</p>
         </div>

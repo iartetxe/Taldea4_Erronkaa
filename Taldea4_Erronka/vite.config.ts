@@ -7,7 +7,6 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     plugins: [
         laravel({
-            // CORRECCIÓN: 'App.jsx' con A mayúscula para que coincida con tu archivo
             input: ['resources/css/app.css', 'resources/js/App.jsx'],
             ssr: 'resources/js/ssr.jsx',
             refresh: true,

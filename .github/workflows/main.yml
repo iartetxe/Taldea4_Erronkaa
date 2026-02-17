@@ -1,0 +1,29 @@
+name: Deploy React to EC2
+on:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: 54.242.1.46
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            
+            cd /var/www/html
+            
+            if [ ! -d "Taldea4_Erronkaa" ]; then
+              git clone https://github.com/${{ github.repository }}.git Taldea4_Erronkaa
+            fi
+            
+            cd Taldea4_Erronkaa
+            git pull origin main
+            
+            docker compose up -d --build

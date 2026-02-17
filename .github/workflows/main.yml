@@ -11,26 +11,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy via SSH to AWS
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
           host: 54.242.1.46
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Entrar en el repo
-            cd /var/www/html/Taldea4_Erronkaa || exit 1
-            
-            # Actualizar código
-            sudo git config --global --add safe.directory /var/www/html/Taldea4_Erronkaa
+            cd /var/www/html/Taldea4_Erronkaa
             sudo git fetch --all
             sudo git reset --hard origin/main
-            
-            # Reconstruir contenedor
             sudo docker compose up -d --build
-            
-            # Esperar a que PHP arranque
             sleep 5
-            
-            # Ejecutar migraciones (dentro de la carpeta del proyecto en el contenedor)
             sudo docker exec mi_web php /var/www/html/Taldea4_Erronka/artisan migrate --force

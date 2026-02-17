@@ -15,14 +15,17 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: 54.242.1.46
-          username: ubuntu
+          username: zubiri
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. Entrar en la carpeta del proyecto en el servidor
-            cd /var/www/html/Taldea4_Erronkaa
+            # 1. Entrar en la carpeta (si no existe, el script se detiene)
+            cd /var/www/html/Taldea4_Erronkaa || { echo "Error: No existe la carpeta"; exit 1; }
             
-            # 2. Bajar los cambios que acabas de subir desde tu PC
+            # 2. Forzar la actualización de los archivos desde GitHub
+            # El reset borra cualquier micro-cambio accidental en el EC2 para que el pull no de error
+            git reset --hard HEAD
             git pull origin main
             
-            # 3. Levantar los contenedores (usando el archivo que ya vimos que existe)
-            docker compose up -d --build
+            # 3. Actualizar los contenedores
+            # Usamos -f para asegurar que encuentre el archivo y --build para que aplique tus cambios de React
+            sudo docker compose -f /var/www/html/Taldea4_Erronkaa/docker-compose.yml up -d --build

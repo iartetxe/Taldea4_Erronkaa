@@ -82,6 +82,12 @@ const Navbar = () => {
                                 </Link>
                             </li>
                         )}
+                        {/*USER BOTOIA*/}
+                         {auth.user.rola !== 'Administratzailea' && (
+                            <Link href="/profila" className="btn btn-outline-light btn-sm rounded-pill px-3 fw-bold">
+                                👤
+                            </Link>
+                        )}
                     </ul>
 
                     {/* ESKUINEKO BOTOIAK (User & Cart) */}

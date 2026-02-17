@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ErosketaController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\KontaktuaController;
+use App\Http\Controllers\ProfilaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::delete('/erabiltzaileak/{id}', [App\Http\Controllers\AdminController::class, 'destroyUser'])->name('admin.users.destroy');
     Route::post('/kontaktuak/{id}/erantzun', [App\Http\Controllers\AdminController::class, 'erantzunMezua'])->name('admin.kontaktuak.erantzun');
+});
+// --- ERABILTZAILEAREN PROFILA (Logeatuta daudenentzat bakarrik) ---
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profila', [ProfilaController::class, 'index'])->name('profila.index');
+    Route::put('/profila', [ProfilaController::class, 'update'])->name('profila.update');
 });
 // Si tienes rutas de Fortify (login, logout), Laravel las gestiona automáticamente,
 // pero asegúrate de que tus botones apunten a /login o /logout.

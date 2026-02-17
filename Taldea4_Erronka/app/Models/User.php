@@ -21,9 +21,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'izena',          
-        'abizenak',
+        'abizena',
         'hiria',
-        'kalea',
+        'helbidea',
         'rola',
         'telefonoa', 
         'email',

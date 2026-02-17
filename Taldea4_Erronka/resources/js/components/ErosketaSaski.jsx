@@ -13,7 +13,7 @@ const ErosketaSaski = ({ onClose }) => {
 
     const [formData, setFormData] = useState({
         izena: auth.user ? auth.user.izena : '',
-        abizenak: '',
+        abizena: '',
         helbidea: '',
         hiria: '',
         pk: '',
@@ -117,7 +117,7 @@ const ErosketaSaski = ({ onClose }) => {
                         // FORMULARIOA
                         <form id="payment-form" onSubmit={handlePayment}>
                             <div className="mb-2"><label>Izena</label><input type="text" className="form-control" value={formData.izena} onChange={e=>setFormData({...formData, izena:e.target.value})} required/></div>
-                            <div className="mb-2"><label>Abizenak</label><input type="text" className="form-control" value={formData.abizenak} onChange={e=>setFormData({...formData, abizenak:e.target.value})} required/></div>
+                            <div className="mb-2"><label>Abizenak</label><input type="text" className="form-control" value={formData.abizena} onChange={e=>setFormData({...formData, abizena:e.target.value})} required/></div>
                             <div className="mb-2"><label>Helbidea</label><input type="text" className="form-control" value={formData.helbidea} onChange={e=>setFormData({...formData, helbidea:e.target.value})} required/></div>
                             <div className="row mb-2">
                                 <div className="col"><label>Hiria</label><input type="text" className="form-control" value={formData.hiria} onChange={e=>setFormData({...formData, hiria:e.target.value})} required/></div>

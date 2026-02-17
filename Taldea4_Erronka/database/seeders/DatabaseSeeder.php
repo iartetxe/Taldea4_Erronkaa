@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
         // 1. Usuarios de prueba (Admin y Normal)
         User::create([
             'izena' => 'Admin',         
-            'abizenak' => 'Nagusia',     
+            'abizena' => 'Nagusia',     
             'hiria' => 'Bilbo',          
-            'kalea' => 'Kale Nagusia 1', 
+            'helbidea' => 'Kale Nagusia 1', 
             'telefonoa' => '667588463',
             'email' => 'admin@artetxea.com',
             'password' => Hash::make('admin123'),
@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'izena' => 'Mikel',
-            'abizenak' => 'Testa',
+            'abizena' => 'Testa',
             'hiria' => 'Gasteiz',
-            'kalea' => 'Dato Kalea 15',
+            'helbidea' => 'Dato Kalea 15',
             'telefonoa' => '667778463',
             'email' => 'mikel@gmail.com',
             'password' => Hash::make('12345678'),

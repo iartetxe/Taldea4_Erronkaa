@@ -37,7 +37,7 @@ class ProfilaController extends Controller
         // HEMEN DITUZU DATU GUZTIAK BALIDATZEKO
         $validated = $request->validate([
             'izena' => 'required|string|max:255',
-            'abizena' => 'required|string|max:255',
+            'abizenak' => 'required|string|max:255',
             
             // FORMA CORRECTA Y MODERNA DE USAR RULE::UNIQUE
             'email' => [

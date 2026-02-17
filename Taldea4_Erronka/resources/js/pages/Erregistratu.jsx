@@ -1,15 +1,13 @@
 import React from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
-// Navbarra kendu dugu Layout automatikoa erabiltzen baduzu.
-// Bestela, inportatu hemen: import Navbar from '../components/Nav/Navbar';
 
 const Erregistratu = () => {
     const { data, setData, post, processing, errors } = useForm({
         izena: '',
-        abizenak: '',
+        abizena: '',
         email: '',
         telefonoa: '',
-        kalea: '',
+        helbidea: '',
         hiria: '',
         password: '',
         password_confirmation: '',
@@ -53,9 +51,9 @@ const Erregistratu = () => {
                                         <label className="form-label fw-bold small">Abizenak *</label>
                                         <input 
                                             type="text" 
-                                            className={`form-control ${errors.abizenak ? 'is-invalid' : ''}`}
-                                            value={data.abizenak} 
-                                            onChange={e => setData('abizenak', e.target.value)} 
+                                            className={`form-control ${errors.abizena ? 'is-invalid' : ''}`}
+                                            value={data.abizena} 
+                                            onChange={e => setData('abizena', e.target.value)} 
                                             required 
                                         />
                                         {errors.abizenak && <div className="invalid-feedback">{errors.abizenak}</div>}
@@ -91,12 +89,12 @@ const Erregistratu = () => {
                                 {/* LERROA 3: KALEA eta HIRIA */}
                                 <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label className="form-label fw-bold small">Kalea *</label>
+                                        <label className="form-label fw-bold small">Helbidea *</label>
                                         <input 
                                             type="text" 
-                                            className={`form-control ${errors.kalea ? 'is-invalid' : ''}`}
-                                            value={data.kalea} 
-                                            onChange={e => setData('kalea', e.target.value)} 
+                                            className={`form-control ${errors.helbidea ? 'is-invalid' : ''}`}
+                                            value={data.helbidea} 
+                                            onChange={e => setData('helbidea', e.target.value)} 
                                             required 
                                         />
                                         {errors.kalea && <div className="invalid-feedback">{errors.kalea}</div>}

@@ -12,10 +12,10 @@ public function up(): void
     Schema::create('users', function (Blueprint $table) {
         $table->id();
         $table->string('izena');
-        $table->string('abizenak');
+        $table->string('abizena')->nullable();
+        $table->string('telefonoa')->nullable();
+        $table->string('helbidea')->nullable();
         $table->string('hiria');
-        $table->string('kalea');
-        $table->string('telefonoa');
         $table->enum('rola', ['Erabiltzailea', 'Administratzailea', 'Artista'])->default('Erabiltzailea');
         $table->string('email')->unique();
         $table->timestamp('email_verified_at')->nullable();

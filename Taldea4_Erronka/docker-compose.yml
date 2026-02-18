@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Zure webgunea
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: artetxea-app
+    container_name: artetxea-app
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_URL: http://localhost
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: artetxea
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      - db
+    networks:
+      - artetxea-network
+
+  # Datu-basea (MariaDB)
+  db:
+    image: mariadb:10.11
+    container_name: artetxea-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: artetxea
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - artetxea-network
+
+networks:
+  artetxea-network:
+    driver: bridge
+
+volumes:
+  db_data:

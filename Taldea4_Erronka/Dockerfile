@@ -12,13 +12,14 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # 3. Extensiones PHP
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# 4. Configurar Apache Document Root
+# 4. Configurar Apache (Hau modu seguruagoan egin dugu)
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# --- LERRO HAU DA GAKOA (Honek konpontzen du 404 errorea) ---
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+# Zuzenketa: Gune zehatza bilatu AllowOverride aktibatzeko
+RUN sed -i '/<Directory \/var\/www\/html\/public\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf || \
+    sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # 5. Activar mod_rewrite
 RUN a2enmod rewrite
@@ -33,12 +34,12 @@ WORKDIR /var/www/html
 COPY . .
 
 # 9. Instalar dependencias
+# Oharra: Hemen 'npm run build' ziurtatu dugu
 RUN composer install --no-interaction --optimize-autoloader --no-dev
-RUN npm install
-RUN npm run build
+RUN npm install && npm run build
 
-# 10. Permisos
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# 10. Permisos (GARRANTZITSUA: .env eta storage)
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80

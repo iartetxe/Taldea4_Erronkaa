@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\KontaktuaController;
 use App\Http\Controllers\ProfilaController;
 use App\Http\Controllers\ForuaController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,5 +124,11 @@ Route::get('/ranking', [GaleriaController::class, 'ranking'])->name('ranking');
 
 // LIKE BOTOIA SAKATZEAN (Auth middleware-a du, ezin da kanpotik erabili)
 Route::post('/obrak/{id}/like', [GaleriaController::class, 'toggleLike'])->middleware('auth')->name('obrak.like');
-// Si tienes rutas de Fortify (login, logout), Laravel las gestiona automáticamente,
-// pero asegúrate de que tus botones apunten a /login o /logout.
+
+// Rutas de Usuario (Auth)
+Route::get('/erregistratu', function () {
+    return Inertia::render('Erregistratu');
+})->name('register');
+
+// AÑADE ESTA LÍNEA PARA SOBRESCRIBIR EL COMPORTAMIENTO DE FORTIFY
+Route::post('/register', [RegisterController::class, 'store']);
